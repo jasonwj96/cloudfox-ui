@@ -1,0 +1,333 @@
+.modelFormContainer {
+  display: flex;
+  flex-flow: column;
+  width: 600px;
+  height: fit-content;
+  border: 2px solid #dddddd;
+  border-radius: 10px;
+  margin: 0px 10px 0px 20px;
+  overflow: hidden;
+  padding: 10px 20px 30px 20px;
+  justify-content: space-between;
+}
+
+.formGroup {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+}
+
+.modelFormHeader {
+  display: flex;
+  width: 100%;
+  margin: 10px 20px;
+  background-color: #ebf3fc;
+  height: fit-content;
+  padding: 5px 15px 5px 20px;
+  border: 2px #74b6fe solid;
+  border-radius: 10px;
+  align-items: center;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.modelFormHeaderTitle {
+  width: fit-content;
+  font-weight: bold;
+  color: #3c98fa;
+  user-select: none;
+}
+
+.modelFormHeaderButton {
+  font-size: 1em;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  color: #3c98fa;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+}
+
+.modelFormHeaderButton:hover {
+  background-color: #3c98fa;
+  color: #ffffff;
+}
+
+.modelForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  background-color: #ffffff;
+  height: fit-content;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.loginLogo {
+  width: 150px;
+  height: 150px;
+}
+
+.loginFormTitle {
+  color: #000;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.loginFormSubtitle {
+  color: #000;
+  text-align: left;
+  font-weight: 100;
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.input {
+  color: #000;
+  background-color: #f2f2f2;
+  border: 2px solid #d7d6d6;
+  font-size: 1em;
+  border-radius: 5px;
+  margin: 10px 0px;
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+}
+
+.inputErrorMsg {
+  display: none;
+  font-size: 0.85em;
+  color: red;
+  margin: 0 10px;
+}
+
+.inputFileDrop {
+  margin-top: 10px;
+  width: 100%;
+  height: 100px;
+  border: 2px dashed #bababa;
+  border-radius: 10px;
+}
+
+.inputFileDrop:hover {
+  background-color: #fcf7f1;
+  border: 2px dashed #ff8800;
+}
+
+.loginPrompt,
+.registerPrompt {
+  font-size: 0.8em;
+  font-weight: bold;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.registerPrompt:hover {
+  transition: 0.2s ease-in-out;
+  color: #004696;
+}
+
+
+
+.loginFormLabel {
+  color: #000;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.radioButtonGroup {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.radioInput {
+  display: none;
+}
+
+.radioLabel {
+  padding: 6px 16px;
+  border: 2px solid #d7d6d6;
+  border-radius: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  color: #838383;
+  background-color: #f2f2f2;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+  margin-right: 10px;
+}
+
+.radioLabel:hover {
+  background-color: #fcf7f1;
+  border-color: #ff8800;
+}
+
+.radioLabelSelected {
+  padding: 6px 16px;
+  border: 2px solid #ff8800;
+  border-radius: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  color: #ffffff;
+  background-color: #ff8800;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+  margin-right: 10px;
+}
+
+.inputFileDrop {
+  position: relative;
+  margin-top: 10px;
+  width: 100%;
+  height: 100px;
+  border: 2px dashed #bababa;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.inputFileDrop:hover {
+  background-color: #fcf7f1;
+  border-color: #ff8800;
+}
+
+.inputFile {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
+
+.dropMessage {
+  pointer-events: none;
+  font-size: 0.95em;
+  color: #999999;
+}
+
+.featuresTable {
+  width: 100%;
+  height: 100%;
+  color: #000;
+  font-size: 0.8em;
+  border-collapse: collapse;
+  margin: 30px 0px 0px 0px;
+  border-radius: 10px;
+}
+
+.featuresTable thead tr {
+  margin-bottom: 20px;
+}
+
+.featuresTable thead tr th {
+  text-align: left;
+  color: #757373;
+  font-size: 0.9em;
+  padding: 1% 0px;
+  font-weight: 500;
+  padding: 10px 10px 10px 10px;
+  font-weight: bold;
+  border-bottom: 2px #dddddd solid;
+}
+
+.featuresTable tbody tr {
+  transition: background-color 100ms ease-in-out;
+}
+
+.featuresTable tbody tr:hover {
+  background-color: #f4f4f4;
+}
+
+.featuresTable tbody tr td {
+  color: #000000;
+  border: 2px #dddddd solid;
+  padding: 10px;
+}
+
+.modelFormFooter {
+  display: flex;
+  width: 100%;
+}
+
+.clearModelBtn {
+  margin: 20px 10px;
+  background-color: #ff8800;
+  width: 100%;
+  height: fit-content;
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.saveModelBtn {
+  margin: 20px 10px;
+  background-color: #3c98fa;
+  width: 100%;
+  height: fit-content;
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.clearModelBtn:hover {
+  background-color: #b86200;
+  transition: 100ms;
+  cursor: pointer;
+}
+
+.saveModelBtn:hover {
+  background-color: #004da0;
+  transition: 100ms;
+  cursor: pointer;
+}
+
+.deleteModelBtn {
+  margin: 20px 10px;
+  background-color: #ff2323;
+  width: 100%;
+  height: fit-content;
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.deleteModelBtn:hover {
+  background-color: #a00505;
+  transition: 100ms;
+  cursor: pointer;
+}

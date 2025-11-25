@@ -1,0 +1,124 @@
+.tableContainer {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #dddddd;
+  border-radius: 10px;
+  padding: 10px 20px 50px 20px;
+}
+
+.tableHeader {
+  display: flex;
+  margin: 10px 0px;
+  background-color: #ebf3fc;
+  height: fit-content;
+  padding: 5px 5px 5px 20px;
+  border: 2px #74b6fe solid;
+  border-radius: 10px;
+  align-items: center;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.tableHeaderTitle {
+  width: fit-content;
+  font-weight: bold;
+  color: #3c98fa;
+  user-select: none;
+}
+
+.tableHeaderButton {
+  font-size: 1em;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+  color: #3c98fa;
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+}
+
+.tableHeaderButton:hover {
+  background-color: #3c98fa;
+  color: #ffffff;
+}
+
+.table {
+  width: 100%;
+  height: 100%;
+  color: #000;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  margin-bottom: 20px;
+}
+
+.table thead tr th {
+  text-align: left;
+  color: #757373;
+  font-size: 0.9em;
+  padding: 1% 0px;
+  font-weight: 500;
+  padding: 10px 10px 10px 30px;
+  font-weight: bold;
+}
+
+.table tbody tr {
+  transition: background-color 100ms ease-in-out;
+}
+
+.table tbody tr:hover {
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+.table tbody tr td {
+  color: #000000;
+  border-bottom: 1px #b3b3b3 solid;
+  padding: 20px 10px 20px 30px;
+}
+
+.table tbody tr td:nth-child(1) {
+  font-weight: bold;
+}
+
+.modelStatusEnabled {
+  font-weight: bold;
+  color: #32c15f;
+  background-color: #cdf2da;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 0.9em;
+}
+
+.modelStatusDisabled {
+  font-weight: bold;
+  color: #e15656;
+  background-color: #f7c9d0;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 0.9em;
+}
+
+.activeRow {
+  background-color: #f4f4f4;
+}
+
+.noRecordsFound {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: fit-content;
+  color: #000;
+  font-size: 1em;
+  text-align: center;
+  font-weight: bold;
+  align-items: center;
+}
+
+.noRecordsFound img {
+  background-color: #ffffff;
+  width: 200px;
+}

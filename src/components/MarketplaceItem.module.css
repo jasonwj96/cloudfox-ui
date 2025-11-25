@@ -1,0 +1,97 @@
+.marketplaceItemContainer {
+  cursor: pointer;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  width: 300px;
+  height: fit-content;
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-weight: bold;
+  color: #fff;
+  margin: 10px;
+  border: 2px solid #c8c8c8;
+  transition: background-color 100ms ease-in-out;
+}
+
+.marketplaceItemContainer:hover {
+  background-color: #ededed;
+}
+
+.modelId {
+  font-size: 0.8em;
+  font-weight: bold;
+  width: fit-content;
+  height: fit-content;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #000;
+  cursor: pointer;
+  margin: 15px 20px 10px 15px;
+}
+
+.modelName {
+  margin: 10px 10px 10px 15px;
+  color: #000;
+  font-size: 0.9em;
+}
+
+.uploadedBy {
+  color: #424242;
+  font-size: 0.8em;
+  margin: 10px 10px 10px 15px;
+  font-weight: 500;
+}
+
+.marketplaceItemFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tokensCounter {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  padding: 0px 20px 0px 10px;
+  overflow: hidden;
+}
+
+.tokensLogo {
+  width: 30px;
+  height: 30px;
+  margin-left: 0px;
+}
+
+.tokensText {
+  font-weight: bold;
+  font-size: 0.8em;
+  color: #000;
+}
+
+.modelStatusEnabled {
+  margin: 10px 10px 10px 10px;
+  font-weight: bold;
+  color: #32c15f;
+  background-color: #cdf2da;
+  border-radius: 5px;
+  padding: 5px 15px;
+  font-size: 0.7em;
+  height: fit-content;
+  width: fit-content;
+}
+
+.modelStatusDisabled {
+  margin: 10px 10px 10px 10px;
+  font-weight: bold;
+  color: #e15656;
+  background-color: #f7c9d0;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 0.9em;
+  font-size: 0.7em;
+  height: fit-content;
+  width: fit-content;
+}

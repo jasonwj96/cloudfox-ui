@@ -1,0 +1,114 @@
+.loginContainer {
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  height: fit-content;
+  width: fit-content;
+  margin: 20px;
+  overflow: hidden;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.loginCover img {
+  width: 400px;
+  height: 100%;
+  object-fit: scale-down;
+  background-color: #ffffff;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  padding: 30px 30px;
+  background-color: #ffffff;
+  height: fit;
+  width: 400px;
+}
+
+.loginLogo {
+  width: 150px;
+  height: 150px;
+}
+
+.loginFormTitle {
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.loginFormSubtitle {
+  color: #000;
+  text-align: center;
+  font-weight: 100;
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.loginInput {
+  color: #000;
+  background-color: #ffffff;
+  border: 1.5px solid #7e7e7e;
+  font-size: 1em;
+  border-radius: 5px;
+  margin: 10px;
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+}
+
+.inputErrorMsg {
+  display: none;
+  font-size: 0.7em;
+  color: red;
+  margin: 10px;
+  width: 100%;
+}
+
+.prompt {
+  font-size: 0.8em;
+  font-weight: bold;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.prompt:hover {
+  transition: 0.2s ease-in-out;
+  color: #004696;
+}
+
+.btnLogin {
+  background-color: #ff8800;
+  width: 100%;
+  height: fit-content;
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+.btnLogin:hover {
+  background-color: #b86200;
+  transition: 100ms;
+  cursor: pointer;
+}
+
+.loginFormLabel {
+  color: #000;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9em;
+}

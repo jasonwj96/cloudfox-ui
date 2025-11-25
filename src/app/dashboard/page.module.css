@@ -1,0 +1,12 @@
+.dashboardContainer {
+  display: flex;
+  flex-flow: column;
+  background-color: transparent;
+}
+
+.dashboardRow {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  padding: 10px;
+}

@@ -1,0 +1,87 @@
+.navbarContainer {
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  background-color: transparent;
+  margin: 10px 0px;
+  padding: 0px 20px;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbarLogo {
+  width: 55px;
+  height: 40px;
+  margin: 10px 0px;
+}
+
+.navbarLogoName {
+  margin: 0px 10px;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbarLinks {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.navbarLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  width: fit-content;
+  height: fit-content;
+  padding: 10px 20px;
+  margin: 0px 20px;
+  transition: ease-in-out 100ms;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.navbarLink:hover {
+  color: #ffffff;
+  background-color: #ff8f18;
+}
+
+.navbarLinkSelected {
+  color: #ffffff;
+  background-color: #ff8f18;
+}
+
+.tokensCounter {
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  height: fit-content;
+  width: fit-content;
+  padding: 0px 20px 0px 5px;
+  /*border: 2px solid #000000;*/
+  overflow: hidden;
+  transition: background-color 200ms ease-in-out;
+  color: #000;
+}
+
+.tokensCounter:hover {
+  background-color: #ff8f18;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.tokensLogo {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.tokensText {
+  font-weight: bold;
+  font-size: 1em;
+}

@@ -1,0 +1,391 @@
+.paymentsFormContainer {
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  height: fit-content;
+  width: fit-content;
+  margin: 20px;
+  overflow: hidden;
+  box-shadow: #32325d40 0px 6px 12px -2px, #0000004d 0px 3px 7px -3px;
+}
+
+.paymentsCover {
+  width: 400px;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.paymentsCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 30px;
+  background-color: #ffffff;
+  width: fit-content;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.stripeLogo {
+  width: 120px;
+  margin-left: -8px;
+}
+
+.loginFormTitle {
+  color: #000;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.8em;
+  margin: 0;
+  align-self: flex-start;
+
+}
+
+.loginFormSubtitle {
+  color: #000;
+  text-align: left;
+  font-weight: 100;
+  font-size: 1.2em;
+  padding: 0;
+  margin: 0 0 30px 0px;
+  align-self: flex-start;
+}
+
+.creditCards {
+  display: flex;
+}
+
+.creditCardContainer {
+  display: flex;
+  flex-flow: column;
+  border-radius: 10px;
+  width: 100%;
+  margin: 10px 30px 10px 0px;
+  padding: 25px;
+  background-color: #3b3b3b;
+  width: 340px;
+  height: 200px;
+}
+
+.creditCardBackContainer {
+  display: flex;
+  flex-flow: column;
+  border-radius: 10px;
+  width: 100%;
+  margin: 10px 0px 10px 0px;
+  background-color: #3b3b3b;
+  padding: 25px 0;
+  width: 340px;
+  height: 200px;
+}
+
+.creditCardReadBand {
+  height: 40px;
+  background-color: #000;
+  width: 100%;
+}
+
+.creditCardHeader,
+.cardIssuerLogo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardIssuerLogo img {
+  width: 48px;
+  margin-right: 10px;
+}
+
+.creditCardIssuer {
+  font-size: 1em;
+}
+
+.creditCardChip {
+  width: 40px;
+  height: 30px;
+}
+
+.cardDetails {
+  margin-top: 20px;
+  display: flex;
+  flex-flow: column;
+}
+
+.cardRow1 {
+  display: flex;
+  flex-flow: column;
+}
+
+.cardRow2 {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 0 7px;
+}
+
+.cardRow3 {
+  display: flex;
+}
+
+
+.cardNumberTitle {
+  font-size: 0.7em;
+  margin-left: 7px;
+}
+
+.cardNumber {
+  user-select: none;
+  font-family: Quicksand, Quicksand Fallback;
+  font-style: normal;
+  margin: 5px 0px 5px 0px;
+  word-spacing: 5px;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2em;
+  border-radius: 5px;
+  padding: 5px;
+  user-select: none;
+  transition: all 200ms ease-in-out;
+  border: 2px transparent dashed;
+  letter-spacing: 1px;
+  word-spacing: 5px;
+}
+
+.cardNumber input:hover {
+  border: 2px #8d8a8a dashed;
+  cursor: pointer;
+}
+
+.cardName {
+  word-spacing: 5px;
+  letter-spacing: 1px;
+  word-wrap: break-word;
+  max-width: 200px;
+}
+
+.validDate {
+  display: flex;
+  flex-flow: column;
+}
+
+.validDateTitle {
+  font-size: 0.8em;
+}
+
+.validDateValue {
+  font-size: 0.7em;
+}
+
+
+.holoCard {
+  margin: 20px 0px 10px 10px;
+  position: relative;
+  width: 250px;
+  height: 42px;
+  background: linear-gradient(45deg,
+      #8ef1f7 0%,
+      #bcf8f1 25%,
+      #d6cfff 50%,
+      #a2f7ff 75%,
+      #f7b0f7 100%);
+  box-shadow: 0 0 15px #ffffff66;
+  overflow: hidden;
+}
+
+.holoCard::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(120deg,
+      #ffffff40 0%,
+      #ffffff0d 50%,
+      #ffffff40 100%);
+  transform: rotate(25deg);
+  animation: holo-light 3s linear infinite;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.holocardNumber {
+  font-family: Quicksand, Quicksand Fallback;
+  font-style: normal;
+  width: 70px;
+  font-size: 1em;
+  letter-spacing: 1px;
+  margin: 20px 10px 10px 0px;
+  border: none;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #303030;
+  text-align: center;
+  font-weight: bold;
+}
+
+.holocardNumber:hover {}
+
+/* //////////////////////////////////////////////////////////////////////////////////////*/
+
+.inputErrorMsg {
+  display: none;
+  font-size: 0.85em;
+  color: red;
+  margin: 0 10px;
+}
+
+.loginPrompt,
+.registerPrompt {
+  font-size: 0.8em;
+  font-weight: bold;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.registerPrompt:hover {
+  transition: 0.2s ease-in-out;
+  color: #004696;
+}
+
+.btnLogin:hover {
+  background-color: #b86200;
+  transition: 100ms;
+  cursor: pointer;
+}
+
+.loginFormLabel {
+  color: #000;
+  width: 100%;
+  text-align: left;
+  font-size: 0.9em;
+}
+
+.paymentFormCheckout {
+  margin: 20px 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.paymentFormCheckoutAmount {
+  display: flex;
+  flex-flow: column;
+}
+
+.checkoutTotal {
+  color: #000;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-end;
+}
+
+.checkoutTotalAmount {
+  background-color: #ff8800;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 3em;
+}
+
+.checkoutTotalTax {
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.input {
+  font-family: Quicksand, Quicksand Fallback;
+  font-style: normal;
+  color: #000;
+  background-color: #f2f2f2;
+  border: 2px solid #d7d6d6;
+  font-size: 1em;
+  border-radius: 5px;
+  margin: 10px 0px;
+  width: 100%;
+  height: 35px;
+  padding: 10px;
+  max-width: 300px;
+}
+
+.inputErrorMsg {
+  display: none;
+  font-size: 0.85em;
+  color: red;
+  margin: 0 10px;
+}
+
+.input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.paymentFormButtons {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.returnButton {
+  background-color: #f2f2f2;
+  width: 100%;
+  height: fit-content;
+  color: #838383;
+  border: 2px #d7d6d6 solid;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  max-width: 200px;
+  text-align: center;
+  font-weight: bold;
+  transition: all 200ms ease-in-out;
+}
+
+.returnButton:hover {
+  cursor: pointer;
+  background-color: #fcf7f1;
+  border-color: #f80;
+}
+
+.buyButton {
+  background-color: #ff8800;
+  width: 100%;
+  height: fit-content;
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  max-width: 200px;
+  text-align: center;
+  transition: all 200ms ease-in-out;
+}
+
+.buyButton:hover {
+  cursor: pointer;
+  background-color: #b86200;
+}
+
+.hidden {
+  display: none;
+}

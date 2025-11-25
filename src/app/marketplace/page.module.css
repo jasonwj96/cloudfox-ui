@@ -1,0 +1,63 @@
+.marketplaceContainer {
+  display: flex;
+  flex-flow: column;
+  background-color: transparent;
+}
+
+.dashboardRow {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  padding: 10px;
+}
+
+.dashboardRowItems {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  border: 2px solid #dddddd;
+  border-radius: 10px;
+  padding: 10px 20px 50px 20px;
+}
+
+.modelsList {
+  display: flex;
+}
+
+.marketPlaceHeader {
+  display: flex;
+  width: 100%;
+  margin: 10px 20px;
+  background-color: #ebf3fc;
+  height: fit-content;
+  padding: 10px 15px 10px 20px;
+  border: 2px #74b6fe solid;
+  border-radius: 10px;
+  align-items: center;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.marketPlaceHeaderTitle {
+  width: fit-content;
+  font-weight: bold;
+  color: #3c98fa;
+  user-select: none;
+}
+
+.noRecordsFound {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: fit-content;
+  color: #000;
+  font-size: 1em;
+  text-align: center;
+  font-weight: bold;
+  align-items: center;
+}
+
+.noRecordsFound img {
+  background-color: #ffffff;
+  width: 200px;
+}
