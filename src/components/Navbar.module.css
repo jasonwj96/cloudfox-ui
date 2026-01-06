@@ -1,9 +1,10 @@
 .navbarContainer {
   display: flex;
   width: 100%;
-  max-width: 1600px;
+  max-width: 1400px;
+  margin: 0px 20px;
   height: fit-content;
-  background-color: transparent;
+  background-color: #ffffff;
   padding: 0px 20px;
   border-radius: 0 0 15px 15px;
   border-left: 1px solid #000;

@@ -310,10 +310,10 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
                   Delete
                 </button>) : (<div></div>)
             }
-            <button type="submit" className={styles.clearModelBtn} onClick={clearModel}>
+            <button type="submit" className={styles.secondaryActionBtn} onClick={clearModel}>
               Clear
             </button>
-            <button type="submit" className={styles.saveModelBtn} onClick={saveModel}>
+            <button type="submit" className={styles.primaryActionBtn} onClick={saveModel}>
               Save
             </button>
           </div>) : (<div></div>)
