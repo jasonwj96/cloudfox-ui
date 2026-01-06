@@ -125,7 +125,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           minLength={3}
           maxLength={30}
           required
-          placeholder='correo@mail.com'
+          placeholder='correo@gmail.com'
         />
         <p
           ref={errorRefs.username}
@@ -147,7 +147,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
               minLength={8}
               maxLength={64}
               required
-              placeholder='Pepe Aguilar'
+              placeholder='Tony Stark'
             />
             <p
               ref={errorRefs.fullname}

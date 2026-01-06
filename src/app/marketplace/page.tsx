@@ -57,9 +57,9 @@ export default function MarketplacePage() {
   }
 
   useEffect(() => {
-    if (!localStorage.getItem("user")) {
-      router.push("/login");
-    }
+    // if (!localStorage.getItem("user")) {
+    //   router.push("/login");
+    // }
 
     loadModels();
   }, []);

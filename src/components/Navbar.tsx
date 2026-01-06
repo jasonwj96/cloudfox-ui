@@ -13,43 +13,27 @@ export default function Navbar({ currentPage, currentTokens }: NavbarProps) {
     <>
       <div className={styles.navbarContainer}>
         <div className={styles.navbarLinks}>
-          <img className={styles.navbarLogo} src="/Cloudfox logo white.png" />
-          <span className={styles.navbarLogoName}>Cloudfox</span>
+          <div className={styles.navbarLeft}>
+            <img className={styles.navbarLogo} src="/Cloudfox logo white.png" />
+            <span className={styles.navbarLogoName}>Cloudfox</span>
+          </div>
 
-          <Link
-            className={`${styles.navbarLink} ${currentPage === '/dashboard' ? styles.navbarLinkSelected : ''
-              }`}
-            href="/dashboard"
-          >
-            Dashboard
-          </Link>
-          <Link
-            className={`${styles.navbarLink} ${currentPage === '/marketplace' ? styles.navbarLinkSelected : ''
-              }`}
-            href="/marketplace"
-          >
-            Marketplace
-          </Link>
-          <Link
-            className={`${styles.navbarLink} ${currentPage === '/login' ? styles.navbarLinkSelected : ''
-              }`}
-            href="/login"
-            onClick={() => {
-              localStorage.removeItem("user");
-              localStorage.removeItem("token");
-            }}
-          >
-            Logout
-          </Link>
+          <div className={styles.navbarCenter}>
+            <Link className={styles.navbarLink} href="/dashboard">Dashboard</Link>
+            <Link className={styles.navbarLink} href="/marketplace">Marketplace</Link>
+            <Link className={styles.navbarLink} href="/login">Logout</Link>
+          </div>
         </div>
-
         <Link href="/payments">
           <div className={styles.tokensCounter}>
             <img className={styles.tokensLogo} src="/cloudfox logo mini.png" />
-            <span  className={styles.tokensText}>
+            {/* <span className={styles.tokensText}>
               {currentTokens >= 1000
                 ? `${parseFloat((currentTokens / 1000).toFixed(2))}k`
                 : currentTokens} tokens
+            </span> */}
+            <span className={styles.tokensText}>
+              54312.98k tokens
             </span>
           </div>
         </Link>
