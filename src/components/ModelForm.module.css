@@ -196,7 +196,6 @@
 }
 
 .inputFileDrop:hover {
-  background-color: #fcf7f1;
   border-color: #000000;
 }
 
@@ -231,13 +230,13 @@
 
 .featuresTable thead tr th {
   text-align: left;
-  color: #757373;
+  color: #000000;
   font-size: 0.9em;
   padding: 1% 0px;
   font-weight: 500;
   padding: 10px 10px 10px 10px;
-  font-weight: bold;
-  border-bottom: 2px #dddddd solid;
+  border-bottom: 1px #000000 solid;
+  font-family: "Space Grotesk";
 }
 
 .featuresTable tbody tr {
@@ -250,7 +249,7 @@
 
 .featuresTable tbody tr td {
   color: #000000;
-  border: 2px #dddddd solid;
+  border: 1px #000000 solid;
   padding: 10px;
 }
 
