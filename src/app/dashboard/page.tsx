@@ -1,23 +1,20 @@
-'use client';
+"use client";
 
-import Navbar from '@/components/Navbar';
-import Table from '@/components/Table';
-import styles from '@/app/dashboard/page.module.css';
-import ModelForm from '@/components/ModelForm';
-import ModelDetails from '@/models/ModelDetails';
-import TableData from '@/models/TableData';
-import { useState, useEffect, useCallback } from 'react';
-import { redirect } from 'next/dist/server/api-utils';
-import { useRouter } from 'next/navigation';
+import Navbar from "@/components/Navbar";
+import Table from "@/components/Table";
+import styles from "@/app/dashboard/page.module.css";
+import ModelForm from "@/components/ModelForm";
+import ModelDetails from "@/models/ModelDetails";
+import TableData from "@/models/TableData";
+import { useState, useEffect, useCallback } from "react";
+import { redirect } from "next/dist/server/api-utils";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
-
   const [modelList, setModelList] = useState(new TableData([], []));
   const [currentTokens, setCurrentTokens] = useState(0);
   const [selected, setSelected] = useState<ModelDetails | null>(null);
   const [tableData, setTableData] = useState<TableData>(new TableData([], []));
-
-  const router = useRouter();
 
   const handleRowClick = useCallback((row: ModelDetails) => {
     setSelected(row);
@@ -26,8 +23,8 @@ export default function DashboardPage() {
   const closeModelForm = () => setSelected(null);
 
   const handleUpdate = (updated: ModelDetails) => {
-    setTableData(td => {
-      const rows = td.rows.map(row =>
+    setTableData((td) => {
+      const rows = td.rows.map((row) =>
         row.modelId === updated.modelId ? updated : row
       );
       return new TableData(td.columns, rows);
@@ -38,12 +35,12 @@ export default function DashboardPage() {
 
   const loadModels = () => {
     const columns = [
-      'Model Id',
-      'Model name',
-      'Uploaded by',
-      'Upload date',
-      'Tokens gained',
-      'Status',
+      "Model Id",
+      "Model name",
+      "Uploaded by",
+      "Upload date",
+      "Tokens gained",
+      "Status",
     ];
 
     const userData = localStorage.getItem("user");
@@ -56,10 +53,11 @@ export default function DashboardPage() {
         method: "POST",
         body: JSON.stringify({
           user: JSON.parse(userData),
-          token: JSON.parse(tokenData)
-        })
-      }).then(response => response.json())
-        .then(json => {
+          token: JSON.parse(tokenData),
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
           setCurrentTokens(json.user.currentTokens);
         });
 
@@ -69,38 +67,34 @@ export default function DashboardPage() {
         method: "POST",
         body: JSON.stringify({
           user: JSON.parse(userData),
-          token: JSON.parse(tokenData)
-        })
+          token: JSON.parse(tokenData),
+        }),
       })
-        .then(response => response.json())
-        .then(json => {
+        .then((response) => response.json())
+        .then((json) => {
           if (json.models) {
             const modelsList: any[] = json.models;
-            let rows: ModelDetails[] = modelsList.map(model =>
-              new ModelDetails(
-                model.modelId,
-                model.modelName,
-                model.uploadedBy,
-                model.uploadDate,
-                model.generatedTokens,
-                model.modelStatus,
-                model.modelParams)
+            let rows: ModelDetails[] = modelsList.map(
+              (model) =>
+                new ModelDetails(
+                  model.modelId,
+                  model.modelName,
+                  model.uploadedBy,
+                  model.uploadDate,
+                  model.generatedTokens,
+                  model.modelStatus,
+                  model.modelParams
+                )
             );
 
             setModelList(new TableData(columns, rows));
           }
-
         })
-        .catch(err => {
-        });
+        .catch((err) => {});
     }
-  }
+  };
 
   useEffect(() => {
-    // if (!localStorage.getItem("user")) {
-    //   router.push("/login");
-    // }
-
     loadModels();
   }, []);
 
@@ -108,15 +102,21 @@ export default function DashboardPage() {
     <div className={styles.dashboardContainer}>
       <Navbar currentPage="/dashboard" currentTokens={currentTokens} />
       <div className={styles.dashboardRow}>
-        <Table data={modelList} onRowClick={handleRowClick} selected={selected} />
-        {selected && <ModelForm
+        <Table
+          data={modelList}
+          onRowClick={handleRowClick}
           selected={selected}
-          onClose={closeModelForm}
-          onSave={handleUpdate}
-          onRefresh={loadModels}
-          readOnly={false}
-        />}
+        />
+        {selected && (
+          <ModelForm
+            selected={selected}
+            onClose={closeModelForm}
+            onSave={handleUpdate}
+            onRefresh={loadModels}
+            readOnly={false}
+          />
+        )}
       </div>
     </div>
-  )
+  );
 }

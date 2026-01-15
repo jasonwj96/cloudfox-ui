@@ -17,9 +17,6 @@ export default function PaymentPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // if (!localStorage.getItem("user")) {
-    //   router.push("/login");
-    // }
   }, []);
 
   return (
