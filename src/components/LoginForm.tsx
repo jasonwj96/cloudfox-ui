@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState, useRef } from 'react';
-import styles from '@/components/LoginForm.module.css';
-import { useRouter } from 'next/navigation';
-import LoginFormData from '@/models/LoginFormData';
+import Link from "next/link";
+import { useState, useRef } from "react";
+import styles from "@/components/LoginForm.module.css";
+import { useRouter } from "next/navigation";
+import LoginFormData from "@/models/LoginFormData";
 import { validateField } from "@/lib/utils";
 
 interface LoginFormProps {
@@ -12,16 +12,18 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ isLogin }: LoginFormProps) {
-  const [formData, setFormData] = useState(new LoginFormData("", "", ""));
+  const [formData, setFormData] = useState(new LoginFormData("", "", "", ""));
 
   const fieldRefs = {
     username: useRef<HTMLInputElement>(null),
+    email: useRef<HTMLInputElement>(null),
     password: useRef<HTMLInputElement>(null),
     fullname: useRef<HTMLInputElement>(null),
   };
 
   const errorRefs = {
     username: useRef<HTMLParagraphElement>(null),
+    email: useRef<HTMLParagraphElement>(null),
     password: useRef<HTMLParagraphElement>(null),
     fullname: useRef<HTMLParagraphElement>(null),
   };
@@ -30,7 +32,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
 
   function onFormChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
-    setFormData(prev => prev.updateFields({ [name]: value }));
+    setFormData((prev) => prev.updateFields({ [name]: value }));
   }
 
   function onBlur(field: keyof typeof fieldRefs) {
@@ -40,63 +42,57 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
   async function onFormSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    // const requiredFields = ['username', 'password'];
-    // if (!isLogin) requiredFields.push('fullname');
+    const requiredFields = ["username", "password"];
 
-    // const isValid = requiredFields.every(key =>
-    //   validateField(
-    //     fieldRefs[key as keyof typeof fieldRefs].current!,
-    //     errorRefs[key as keyof typeof errorRefs].current!
-    //   )
-    // );
+    if (!isLogin) {
+      requiredFields.push("fullname", "email");
+    }
 
-    // if (!isValid) {
-    //   return
-    // };
+    const isValid = requiredFields.every((key) =>
+      validateField(
+        fieldRefs[key as keyof typeof fieldRefs].current!,
+        errorRefs[key as keyof typeof errorRefs].current!
+      )
+    );
 
-    // const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/${isLogin ? 'login' : 'register'}`;
-    // const body = {
-    //   username: formData.username,
-    //   password: formData.password,
-    //   fullname: formData.fullname
-    // };
+    if (!isValid) {
+      return;
+    }
 
-    // await fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(body),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // }).then(response => response.json())
-    //   .then(json => {
-    //     // if (json.error) {
-    //     //   if (isLogin) {
-    //     //     alert("Hubo un error al iniciar sesion");
-    //     //   } else {
-    //     //     alert("Hubo un error al registrar el usuario");
-    //     //   }
-    //     //   console.error(json.error);
-    //     // } else {
-    //     //   if (isLogin) {
-    //     //     localStorage.removeItem("user");
-    //     //     localStorage.removeItem("token");
+    let url = "";
 
-    //     //     localStorage.setItem("user", JSON.stringify(json.user));
-    //     //     localStorage.setItem("token", JSON.stringify(json.token));
-    //     //   } else {
-    //     //     alert("Usuario registrado exitosamente.");
-    //     //   }
-    //     //   router.push(isLogin ? "/dashboard" : "/login");
-    //     // }
-    //     router.push("/dashboard");
-    //   }).catch(e => {
-    //     if (isLogin) {
-    //       alert("Hubo un error al iniciar sesion");
-    //     } else {
-    //       alert("Hubo un error al registrar el usuario");
-    //     }
-    //   });
-         router.push("/dashboard");
+    if (isLogin) {
+      url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/session/login`;
+    } else {
+      url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/accounts/register`;
+    }
+
+    const body = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      fullname: formData.fullname,
+    };
+
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.error(json.message);
+          return;
+        }
+        router.push(isLogin ? "/dashboard" : "/login");
+      })
+      .catch((e) => {
+          // Login/Register modal popup
+      });
   }
 
   return (
@@ -106,14 +102,15 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       </div>
 
       <form className={styles.loginForm} onSubmit={onFormSubmit} noValidate>
-        <img
-          className={styles.loginLogo}
-          src="/cloudfox-logo.png"
-        />
-        <h1 className={styles.loginFormTitle}>{isLogin ? 'Login' : 'Register'}</h1>
+        <img className={styles.loginLogo} src="/cloudfox-logo.png" />
+        <h1 className={styles.loginFormTitle}>
+          {isLogin ? "Login" : "Register"}
+        </h1>
         <h1 className={styles.loginFormSubtitle}>to continue</h1>
 
-        <label className={styles.loginFormLabel} htmlFor="username">Username</label>
+        <label className={styles.loginFormLabel} htmlFor="username">
+          Username
+        </label>
         <input
           ref={fieldRefs.username}
           name="username"
@@ -125,17 +122,45 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           minLength={3}
           maxLength={30}
           required
-          placeholder='correo@gmail.com'
+          placeholder="username123"
         />
         <p
           ref={errorRefs.username}
           className={styles.inputErrorMsg}
-          style={{ display: 'none' }}>
-        </p>
+          style={{ display: "none" }}
+        ></p>
 
         {!isLogin && (
           <>
-            <label className={styles.loginFormLabel} htmlFor="fullname">Full name</label>
+            <label className={styles.loginFormLabel} htmlFor="email">
+              Email
+            </label>
+            <input
+              ref={fieldRefs.email}
+              name="email"
+              value={formData.email}
+              className={styles.loginInput}
+              onChange={onFormChange}
+              onBlur={() => onBlur("email")}
+              type="text"
+              minLength={5}
+              maxLength={64}
+              required
+              placeholder="jdoe@gmail.com"
+            />
+            <p
+              ref={errorRefs.email}
+              className={styles.inputErrorMsg}
+              style={{ display: "none" }}
+            ></p>
+          </>
+        )}
+
+        {!isLogin && (
+          <>
+            <label className={styles.loginFormLabel} htmlFor="fullname">
+              Full name
+            </label>
             <input
               ref={fieldRefs.fullname}
               name="fullname"
@@ -147,17 +172,19 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
               minLength={8}
               maxLength={64}
               required
-              placeholder='Tony Stark'
+              placeholder="John Doe"
             />
             <p
               ref={errorRefs.fullname}
               className={styles.inputErrorMsg}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
             ></p>
           </>
         )}
 
-        <label className={styles.loginFormLabel} htmlFor="password">Password</label>
+        <label className={styles.loginFormLabel} htmlFor="password">
+          Password
+        </label>
         <input
           ref={fieldRefs.password}
           value={formData.password}
@@ -166,15 +193,15 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           onChange={onFormChange}
           onBlur={() => onBlur("password")}
           type="password"
-          minLength={8}
+          minLength={1}
           maxLength={64}
           required
-          placeholder='********'
+          placeholder="***************"
         />
         <p
           ref={errorRefs.password}
           className={styles.inputErrorMsg}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         ></p>
 
         {isLogin ? (
@@ -188,7 +215,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
         )}
 
         <button type="submit" className={styles.btnLogin}>
-          {isLogin ? 'Login' : 'Register'}
+          {isLogin ? "Login" : "Register"}
         </button>
       </form>
     </div>
