@@ -173,7 +173,6 @@ export default function PaymentForm() {
       setError(result.error.message || 'Payment failed.');
     } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
 
-      // TODO: Enviar usuario
       const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/buy-tokens`;
       await fetch(url, {
         method: "POST",

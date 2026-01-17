@@ -43,55 +43,31 @@ export default function DashboardPage() {
       "Status",
     ];
 
-    const userData = localStorage.getItem("user");
-    const tokenData = localStorage.getItem("token");
+    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/find-by-account`;
 
-    if (userData && tokenData) {
-      let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/profile`;
-
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          user: JSON.parse(userData),
-          token: JSON.parse(tokenData),
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          setCurrentTokens(json.user.currentTokens);
-        });
-
-      url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/get-models`;
-
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          user: JSON.parse(userData),
-          token: JSON.parse(tokenData),
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.models) {
-            const modelsList: any[] = json.models;
-            let rows: ModelDetails[] = modelsList.map(
-              (model) =>
-                new ModelDetails(
-                  model.modelId,
-                  model.modelName,
-                  model.uploadedBy,
-                  model.uploadDate,
-                  model.generatedTokens,
-                  model.modelStatus,
-                  model.modelParams
-                )
-            );
-
-            setModelList(new TableData(columns, rows));
-          }
-        })
-        .catch((err) => {});
-    }
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.models) {
+          const modelsList: any[] = json.models;
+          let rows: ModelDetails[] = modelsList.map(
+            (model) =>
+              new ModelDetails(
+                model.id,
+                model.name,
+                model.accountName,
+                model.creationDate,
+                model.generatedTokens,
+                model.active,
+                []
+              )
+          );
+          setModelList(new TableData(columns, rows));
+        }
+      });
   };
 
   useEffect(() => {
