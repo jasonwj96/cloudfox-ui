@@ -1,24 +1,32 @@
-'use client';
+"use client";
 
-import { FormEvent, useState, useEffect } from 'react';
-import styles from '@/components/ModelForm.module.css';
-import ModelDetails from '@/models/ModelDetails';
-import ModelParam from '@/models/ModelParam';
+import { FormEvent, useState, useEffect } from "react";
+import styles from "@/components/ModelForm.module.css";
+import ModelDetails from "@/models/ModelDetails";
+import ModelParam from "@/models/ModelParam";
 
 interface ModelFormProps {
-  selected: ModelDetails,
+  selected: ModelDetails;
   onClose: () => void;
   onSave: (updated: ModelDetails) => void;
   onRefresh: () => void;
-  readOnly: boolean
+  readOnly: boolean;
 }
 
-export default function ModelForm({ selected, onClose, onSave, onRefresh, readOnly }: ModelFormProps) {
+export default function ModelForm({
+  selected,
+  onClose,
+  onSave,
+  onRefresh,
+  readOnly,
+}: ModelFormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [modelData, setModelData] = useState<any>();
   const [modelName, setModelName] = useState(selected.modelName);
   const [modelStatus, setModelStatus] = useState<boolean>(selected.modelStatus);
-  const [modelParams, setModelParams] = useState<ModelParam[]>(selected.modelParams);
+  const [modelParams, setModelParams] = useState<ModelParam[]>(
+    selected.modelParams,
+  );
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -29,8 +37,8 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
     reader.onload = (event) => {
       try {
         const text = event.target?.result;
-        if (typeof text === 'string') {
-          const parsedText = text.replace(/\bNaN\b/g, 'null');
+        if (typeof text === "string") {
+          const parsedText = text.replace(/\bNaN\b/g, "null");
           const parsed = JSON.parse(parsedText);
 
           if (parsed.learner) {
@@ -38,7 +46,10 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
             let dataTypes = parsed.learner.feature_types;
 
             const minLength = Math.min(features.length, dataTypes.length);
-            let paramList = Array.from({ length: minLength }, (_, i) => [features[i], dataTypes[i]]);
+            let paramList = Array.from({ length: minLength }, (_, i) => [
+              features[i],
+              dataTypes[i],
+            ]);
 
             let params: any = paramList.map((param: string[]) => {
               return new ModelParam(param[0], param[1]);
@@ -48,7 +59,7 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
           }
         }
       } catch (err) {
-        console.error('Failed to parse JSON:', err);
+        console.error("Failed to parse JSON:", err);
         setModelData("");
       }
     };
@@ -75,12 +86,12 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
 
   const parseFeatureType = (dataType: string): string => {
     const types: Record<string, string> = {
-      "c": "String",
-      "categorical": "String",
-      "i": "Integer",
-      "int": "Integer",
-      "float": "Float",
-      "q": "Float"
+      c: "String",
+      categorical: "String",
+      i: "Integer",
+      int: "Integer",
+      float: "Float",
+      q: "Float",
     };
 
     return types[dataType] || "Unknown";
@@ -93,25 +104,23 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
   };
 
   const uploadModel = () => {
-    const userString = localStorage.getItem("user");
-    const user = userString ? JSON.parse(userString) : null;
+    if (!selectedFile) {
+      throw new Error("File must be selected.");
+    }
 
-    const body: any = {
-      user,
-      modelId: selected.modelId,
-      modelFileName: selectedFile?.name,
-      modelName,
-      modelStatus,
-      modelData: modelData
-    };
+    const body = new FormData();
+    body.append("modelName", modelName);
+    body.append("modelStatus", modelStatus.toString());
+    body.append("framework", "xgboost");
+    body.append("filePayload", selectedFile, selectedFile.name);
 
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/upload-model`,
+      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/create`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }
+        body: body,
+        credentials: "include",
+      },
     )
       .then((response) => response.json())
       .then((json) => {
@@ -134,16 +143,16 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
 
     if (user) {
       fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(
-          {
-            modelId: selected.modelId,
-            user: JSON.parse(user)
-          }),
-      }).then(response => response.json())
-        .then(json => {
+        method: "POST",
+        body: JSON.stringify({
+          modelId: selected.modelId,
+          user: JSON.parse(user),
+        }),
+      })
+        .then((response) => response.json())
+        .then((json) => {
           if (json.success) {
-            alert('Model deleted successfully');
+            alert("Model deleted successfully");
             onRefresh();
           } else {
             alert("Failed to delete model");
@@ -151,11 +160,10 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
           }
         })
         .catch((err) => {
-          console.error('Delete failed:', err);
-          alert('Error deleting model');
+          console.error("Delete failed:", err);
+          alert("Error deleting model");
         });
     }
-
   };
 
   const saveModel = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -197,18 +205,24 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
     <div className={styles.modelFormContainer}>
       <div className={styles.formGroup}>
         <div className={styles.modelFormHeader}>
-          <div className={styles.modelFormHeaderTitle}>{selected.modelId ? "Edit model" : "Add model"}</div>
-          <div onClick={onClose} className={styles.modelFormHeaderButton}>x</div>
+          <div className={styles.modelFormHeaderTitle}>
+            {selected.modelId ? "Edit model" : "Add model"}
+          </div>
+          <div onClick={onClose} className={styles.modelFormHeaderButton}>
+            x
+          </div>
         </div>
 
         <form className={styles.modelForm}>
-          {selected.modelId ?
-            (<div>
-              <label className={styles.loginFormLabel} htmlFor="model-id">Model Id</label>
+          {selected.modelId ? (
+            <div>
+              <label className={styles.loginFormLabel} htmlFor="model-id">
+                Model Id
+              </label>
               <input
                 name="model-id"
                 value={selected.modelId}
-                onChange={e => setModelName(e.target.value)}
+                onChange={(e) => setModelName(e.target.value)}
                 className={styles.input}
                 type="text"
                 minLength={3}
@@ -216,81 +230,109 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
                 disabled={true}
                 required
               />
-            </div>) : (<div></div>)
-          }
+            </div>
+          ) : (
+            <div></div>
+          )}
 
-          <label className={styles.loginFormLabel} htmlFor="model-name">Model name</label>
+          <label className={styles.loginFormLabel} htmlFor="model-name">
+            Model name
+          </label>
           <input
             name="model-name"
             value={modelName}
-            onChange={e => setModelName(e.target.value)}
+            onChange={(e) => setModelName(e.target.value)}
             className={styles.input}
             type="text"
             minLength={3}
             maxLength={30}
             disabled={readOnly}
             required
-
           />
-          <p className={`${styles.loginUserError} ${styles.inputErrorMsg}`} style={{ display: 'none' }}></p>
+          <p
+            className={`${styles.loginUserError} ${styles.inputErrorMsg}`}
+            style={{ display: "none" }}
+          ></p>
 
-          {
-            !readOnly ? (<div>
-              <label className={styles.loginFormLabel} htmlFor="model-status">Model status</label>
+          {!readOnly ? (
+            <div>
+              <label className={styles.loginFormLabel} htmlFor="model-status">
+                Model status
+              </label>
               <div className={styles.radioButtonGroup}>
-                <div
-                  className={styles.radioInput}
-                />
-                <label htmlFor="status-active" className={modelStatus === true ? styles.radioLabelSelected : styles.radioLabel}
-                  onClick={() => setModelStatus(true)}>Enabled</label>
-                <div
-                  className={styles.radioInput}
-                  onClick={() => setModelStatus(false)}
-                />
-                <label htmlFor="status-inactive" className={modelStatus === false ? styles.radioLabelSelected : styles.radioLabel}
-                  onClick={() => setModelStatus(false)}
-                >Disabled</label>
-              </div>
-            </div>) :
-              (<div></div>)
-          }
-          {
-            !readOnly ? (
-              <div>
-                <label className={styles.loginFormLabel} htmlFor="model-file">Model file</label>
-                <div
-                  className={styles.inputFileDrop}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
+                <div className={styles.radioInput} />
+                <label
+                  htmlFor="status-active"
+                  className={
+                    modelStatus === true
+                      ? styles.radioLabelSelected
+                      : styles.radioLabel
+                  }
+                  onClick={() => setModelStatus(true)}
                 >
-                  <p className={styles.dropMessage}>
-                    {selectedFile ? `${selectedFile.name}` : 'Drag & drop a file, or click the area to upload'}
-                  </p>
-                  <input
-                    type="file"
-                    className={styles.inputFile}
-                    onChange={handleFileChange}
-                    disabled={readOnly}
-                  />
-                </div>
+                  Enabled
+                </label>
+                <div
+                  className={styles.radioInput}
+                  onClick={() => setModelStatus(false)}
+                />
+                <label
+                  htmlFor="status-inactive"
+                  className={
+                    modelStatus === false
+                      ? styles.radioLabelSelected
+                      : styles.radioLabel
+                  }
+                  onClick={() => setModelStatus(false)}
+                >
+                  Disabled
+                </label>
               </div>
-            ) : (<div></div>)
-          }
+            </div>
+          ) : (
+            <div></div>
+          )}
+          {!readOnly ? (
+            <div>
+              <label className={styles.loginFormLabel} htmlFor="model-file">
+                Model file
+              </label>
+              <div
+                className={styles.inputFileDrop}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
+                <p className={styles.dropMessage}>
+                  {selectedFile
+                    ? `${selectedFile.name}`
+                    : "Drag & drop a file, or click the area to upload"}
+                </p>
+                <input
+                  type="file"
+                  className={styles.inputFile}
+                  onChange={handleFileChange}
+                  disabled={readOnly}
+                />
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </form>
       </div>
 
       {modelParams && (
         <table className={styles.featuresTable}>
-          {
-            modelParams.length > 0 ? (
-              <thead>
-                <tr>
-                  <th>Feature Name</th>
-                  <th>Data Type</th>
-                </tr>
-              </thead>) :
-              (<thead></thead>)
-          }
+          {modelParams.length > 0 ? (
+            <thead>
+              <tr>
+                <th>Feature Name</th>
+                <th>Data Type</th>
+              </tr>
+            </thead>
+          ) : (
+            <thead></thead>
+          )}
           <tbody>
             {modelParams.map((param: ModelParam) => (
               <tr key={param.featureName}>
@@ -301,23 +343,37 @@ export default function ModelForm({ selected, onClose, onSave, onRefresh, readOn
           </tbody>
         </table>
       )}
-      {
-        !readOnly ? (
-          <div className={styles.modelFormFooter}>
-            {
-              selected.modelId ? (
-                <button type="submit" className={styles.deleteModelBtn} onClick={deleteModel}>
-                  Delete
-                </button>) : (<div></div>)
-            }
-            <button type="submit" className={styles.secondaryActionBtn} onClick={clearModel}>
-              Clear
+      {!readOnly ? (
+        <div className={styles.modelFormFooter}>
+          {selected.modelId ? (
+            <button
+              type="submit"
+              className={styles.deleteModelBtn}
+              onClick={deleteModel}
+            >
+              Delete
             </button>
-            <button type="submit" className={styles.primaryActionBtn} onClick={saveModel}>
-              Save
-            </button>
-          </div>) : (<div></div>)
-      }
+          ) : (
+            <div></div>
+          )}
+          <button
+            type="submit"
+            className={styles.secondaryActionBtn}
+            onClick={clearModel}
+          >
+            Clear
+          </button>
+          <button
+            type="submit"
+            className={styles.primaryActionBtn}
+            onClick={saveModel}
+          >
+            Save
+          </button>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
