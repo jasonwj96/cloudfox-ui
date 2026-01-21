@@ -57,7 +57,7 @@
   font-size: 0.9em;
   padding: 1% 0px;
   font-weight: 500;
-  padding: 10px 10px 10px 30px;
+  padding: 10px 10px 10px 10px;
   font-weight: bold;
 }
 
@@ -73,7 +73,7 @@
 .table tbody tr td {
   color: #000000;
   border-bottom: 1px #b3b3b3 solid;
-  padding: 20px 10px 20px 30px;
+  padding: 10px 10px 10px 10px;
 }
 
 .table tbody tr td:nth-child(1) {
@@ -84,18 +84,16 @@
   font-weight: bold;
   color: #32c15f;
   background-color: #cdf2da;
-  border-radius: 5px;
-  padding: 5px 20px;
-  font-size: 0.9em;
+  padding: 5px 10px;
+  font-size: 0.8em;
 }
 
 .modelStatusDisabled {
   font-weight: bold;
   color: #e15656;
   background-color: #f7c9d0;
-  border-radius: 5px;
-  padding: 5px 20px;
-  font-size: 0.9em;
+  padding: 5px 10px;
+  font-size: 0.8em;
 }
 
 .activeRow {

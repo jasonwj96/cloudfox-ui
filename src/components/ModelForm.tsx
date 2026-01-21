@@ -124,53 +124,39 @@ export default function ModelForm({
     )
       .then((response) => response.json())
       .then((json) => {
-        if (json.success) {
-          alert("Model uploaded successfully.");
+        if (!json.error) {
           onRefresh();
         } else {
-          alert(json.error);
+          console.log(json);
         }
       })
       .catch((err) => {
-        alert("There was an error while uploading the model.");
         console.error("Upload failed:", err);
       });
   };
 
   const deleteModel = () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/delete-model`;
-    const user = localStorage.getItem("user");
+    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/${selected.modelId}`;
 
-    if (user) {
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          modelId: selected.modelId,
-          user: JSON.parse(user),
-        }),
+    fetch(url, {
+      method: "DELETE",
+      credentials: "include"
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Delete failed");
+        }
+        onRefresh();
       })
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.success) {
-            alert("Model deleted successfully");
-            onRefresh();
-          } else {
-            alert("Failed to delete model");
-            console.error(json.message);
-          }
-        })
-        .catch((err) => {
-          console.error("Delete failed:", err);
-          alert("Error deleting model");
-        });
-    }
+      .catch((err) => {
+        console.error("Delete failed:", err);
+      });
   };
 
   const saveModel = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (!selectedFile && !selected.modelId) {
-      alert("No file selected.");
       console.error("No file selected");
       return;
     }
@@ -184,7 +170,6 @@ export default function ModelForm({
           setModelData(text);
         }
       } catch (err) {
-        alert("There was an error while reading the file.");
         console.error("Failed to parse JSON:", err);
       }
       uploadModel();

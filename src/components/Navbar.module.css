@@ -55,11 +55,15 @@
   justify-content: center;
   color: #000000;
   margin: 30px 20px;
-  border-radius: 50px;
   font-size: 0.9rem;
   line-height: 1.25rem;
   font-family: "Space Grotesk";
   font-weight: 500;
+}
+
+button.navbarLink {
+  background-color: transparent;
+  border: none;
 }
 
 .navbarLink:hover::after {

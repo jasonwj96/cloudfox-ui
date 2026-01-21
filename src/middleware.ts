@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  console.log("MIDDLEWARE HIT:", request.nextUrl.pathname);
   const sessionCookie = request.cookies.get("SESSION");
 
   const protectedPaths = ["/dashboard", "/marketplace", "/payments"];
