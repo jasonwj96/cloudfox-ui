@@ -51,8 +51,8 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
     const isValid = requiredFields.every((key) =>
       validateField(
         fieldRefs[key as keyof typeof fieldRefs].current!,
-        errorRefs[key as keyof typeof errorRefs].current!
-      )
+        errorRefs[key as keyof typeof errorRefs].current!,
+      ),
     );
 
     if (!isValid) {
@@ -68,30 +68,30 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
     }
 
     const body = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      fullname: formData.fullname,
+      username: fieldRefs.username.current!.value,
+      email: fieldRefs.email.current?.value ?? "",
+      password: fieldRefs.password.current!.value,
+      fullname: fieldRefs.fullname.current?.value ?? "",
     };
 
     await fetch(url, {
       method: "POST",
-      body: JSON.stringify(body),
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      body: JSON.stringify(body),
     })
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {
-          console.error(json.message);
+          console.log(json.message);
           return;
         }
         router.push(isLogin ? "/dashboard" : "/login");
       })
       .catch((e) => {
-          // Login/Register modal popup
+        // Login/Register modal popup
       });
   }
 
@@ -120,7 +120,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           onBlur={() => onBlur("username")}
           type="text"
           minLength={3}
-          maxLength={30}
+          maxLength={32}
           required
           placeholder="username123"
         />
@@ -143,8 +143,8 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
               onChange={onFormChange}
               onBlur={() => onBlur("email")}
               type="text"
-              minLength={5}
-              maxLength={64}
+              minLength={3}
+              maxLength={255}
               required
               placeholder="jdoe@gmail.com"
             />
@@ -169,8 +169,8 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
               onChange={onFormChange}
               onBlur={() => onBlur("fullname")}
               type="text"
-              minLength={8}
-              maxLength={64}
+              minLength={1}
+              maxLength={255}
               required
               placeholder="John Doe"
             />
@@ -193,7 +193,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           onChange={onFormChange}
           onBlur={() => onBlur("password")}
           type="password"
-          minLength={1}
+          minLength={12}
           maxLength={64}
           required
           placeholder="***************"
