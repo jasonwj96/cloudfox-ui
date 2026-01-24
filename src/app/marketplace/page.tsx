@@ -24,29 +24,22 @@ export default function MarketplacePage() {
 
   const loadModels = () => {
 
-    const userData = localStorage.getItem("user");
-    const tokenData = localStorage.getItem("token");
-
     let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/profile`;
 
-    if (userData && tokenData) {
+      // fetch(url, {
+      //   method: "POST",
+      //   body: JSON.stringify({
+         
+      //   })
+      // }).then(response => response.json())
+      //   .then(json => {
+      //     setCurrentTokens(json.user.currentTokens);
+      //   });
 
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          user: JSON.parse(userData),
-          token: JSON.parse(tokenData)
-        })
-      }).then(response => response.json())
-        .then(json => {
-          setCurrentTokens(json.user.currentTokens);
-        });
-
-    }
-
-    url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/get-models`;
+    url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model`;
     fetch(url, {
-      method: "POST"
+      method: "GET",
+      credentials: "include"
     })
       .then(response => response.json())
       .then(json => {
@@ -57,10 +50,6 @@ export default function MarketplacePage() {
   }
 
   useEffect(() => {
-    // if (!localStorage.getItem("user")) {
-    //   router.push("/login");
-    // }
-
     loadModels();
   }, []);
 
@@ -76,7 +65,7 @@ export default function MarketplacePage() {
             modelList.length > 0 ? (<div className={styles.modelsList}>
               {
                 modelList.map((model: ModelDetails) => {
-                  return (<MarketplaceItem key={model.modelId} data={model} onItemClick={handleItemClick} />)
+                  return (<MarketplaceItem key={model.id} data={model} onItemClick={handleItemClick} />)
                 })
               }
             </div>) : (

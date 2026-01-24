@@ -1,23 +1,23 @@
 .marketplaceContainer {
   display: flex;
   flex-flow: column;
-  background-color: transparent;
 }
 
 .dashboardRow {
   display: flex;
   flex-flow: row;
-  width: 100%;
   padding: 10px;
+
+  margin: 10px;
 }
 
 .dashboardRowItems {
   width: 100%;
   display: flex;
   flex-flow: column;
-  border: 2px solid #dddddd;
-  border-radius: 10px;
-  padding: 10px 20px 50px 20px;
+  padding: 0px 20px 50px 0px;
+    background-color: #ffffff;
+  border: 1px solid #000000;
 }
 
 .modelsList {
@@ -27,12 +27,8 @@
 .marketPlaceHeader {
   display: flex;
   width: 100%;
-  margin: 10px 20px;
-  background-color: #ebf3fc;
+  margin: 5px 10px 10px 25px;
   height: fit-content;
-  padding: 10px 15px 10px 20px;
-  border: 2px #74b6fe solid;
-  border-radius: 10px;
   align-items: center;
   align-self: center;
   justify-content: space-between;
@@ -40,9 +36,9 @@
 
 .marketPlaceHeaderTitle {
   width: fit-content;
-  font-weight: bold;
-  color: #3c98fa;
+  color: #000000;
   user-select: none;
+  font-size: 1.2em;
 }
 
 .noRecordsFound {

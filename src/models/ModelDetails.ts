@@ -2,28 +2,28 @@ import ModelParam from "./ModelParam";
 
 export default class ModelDetails {
 
-  modelId: string;
-  modelName: string;
-  uploadedBy: string;
-  uploadDate: string;
+  id: string;
+  name: string;
+  accountName: string;
+  creationDate: string;
   generatedTokens: number;
-  modelStatus: boolean;
+  active: boolean;
   modelParams: ModelParam[]
 
   constructor(
-    modelId: string,
-    modelName: string,
-    uploadedBy: string,
-    uploadDate: string,
+    id: string,
+    name: string,
+    accountName: string,
+    creationDate: string,
     generatedTokens: number,
-    modelStatus: boolean,
+    active: boolean,
     modelParams: ModelParam[]) {
-    this.modelId = modelId;
-    this.modelName = modelName;
-    this.uploadedBy = uploadedBy;
-    this.uploadDate = uploadDate;
+    this.id = id;
+    this.name = name;
+    this.accountName = accountName;
+    this.creationDate = creationDate;
     this.generatedTokens = generatedTokens;
-    this.modelStatus = modelStatus;
+    this.active = active;
     this.modelParams = modelParams;
   }
 }

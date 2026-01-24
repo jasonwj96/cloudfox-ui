@@ -28,7 +28,7 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
           <tbody>
             {
               data.rows.map((row: ModelDetails) => {
-                const isSelected = selected?.modelId === row.modelId;
+                const isSelected = selected?.id === row.id;
 
                 const date = new Date(row.uploadDate);
 
@@ -40,11 +40,11 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
 
                 return (
                   <tr
-                    key={row.modelId}
+                    key={row.id}
                     onClick={() => onRowClick?.(row)}
                     className={isSelected ? styles.activeRow : ''}
                   >
-                    <td key={row.modelId}>{row.modelId}</td>
+                    <td key={row.id}>{row.id}</td>
                     <td>{row.modelName}</td>
                     <td>{row.uploadedBy}</td>
                     <td>{formattedDate}</td>

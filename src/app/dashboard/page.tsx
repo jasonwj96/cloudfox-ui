@@ -7,8 +7,6 @@ import ModelForm from "@/components/ModelForm";
 import ModelDetails from "@/models/ModelDetails";
 import TableData from "@/models/TableData";
 import { useState, useEffect, useCallback } from "react";
-import { redirect } from "next/dist/server/api-utils";
-import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const [modelList, setModelList] = useState(new TableData([], []));
@@ -25,7 +23,7 @@ export default function DashboardPage() {
   const handleUpdate = (updated: ModelDetails) => {
     setTableData((td) => {
       const rows = td.rows.map((row) =>
-        row.modelId === updated.modelId ? updated : row
+        row.id === updated.id ? updated : row
       );
       return new TableData(td.columns, rows);
     });

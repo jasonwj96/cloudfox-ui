@@ -15,13 +15,13 @@ export default function MarketplaceItem({ data, onItemClick }: MarketplaceItemPr
     >
       <div>
         <div className={styles.modelId}>
-          {data.modelId}
+          {data.id}
         </div>
         <div className={styles.modelName}>
-          {data.modelName}
+          {data.name}
         </div>
         <div className={styles.uploadedBy}>
-          {data.uploadedBy}
+          {data.accountName}
         </div>
       </div>
       <div>
@@ -31,7 +31,7 @@ export default function MarketplaceItem({ data, onItemClick }: MarketplaceItemPr
             <span className={styles.tokensText}>{data.generatedTokens}</span>
           </div>
           {
-            data.modelStatus ? (
+            data.active ? (
               <div className={styles.modelStatusEnabled}>
                 Enabled
               </div>

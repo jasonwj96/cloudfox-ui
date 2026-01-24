@@ -136,7 +136,7 @@ export default function ModelForm({
   };
 
   const deleteModel = () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/${selected.modelId}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/${selected.id}`;
 
     fetch(url, {
       method: "DELETE",
@@ -156,7 +156,7 @@ export default function ModelForm({
   const saveModel = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (!selectedFile && !selected.modelId) {
+    if (!selectedFile && !selected.id) {
       console.error("No file selected");
       return;
     }
@@ -191,7 +191,7 @@ export default function ModelForm({
       <div className={styles.formGroup}>
         <div className={styles.modelFormHeader}>
           <div className={styles.modelFormHeaderTitle}>
-            {selected.modelId ? "Edit model" : "Add model"}
+            {selected.id ? "Edit model" : "Add model"}
           </div>
           <div onClick={onClose} className={styles.modelFormHeaderButton}>
             x
@@ -199,14 +199,14 @@ export default function ModelForm({
         </div>
 
         <form className={styles.modelForm}>
-          {selected.modelId ? (
+          {selected.id ? (
             <div>
               <label className={styles.loginFormLabel} htmlFor="model-id">
                 Model Id
               </label>
               <input
                 name="model-id"
-                value={selected.modelId}
+                value={selected.id}
                 onChange={(e) => setModelName(e.target.value)}
                 className={styles.input}
                 type="text"
@@ -330,7 +330,7 @@ export default function ModelForm({
       )}
       {!readOnly ? (
         <div className={styles.modelFormFooter}>
-          {selected.modelId ? (
+          {selected.id ? (
             <button
               type="submit"
               className={styles.deleteModelBtn}
