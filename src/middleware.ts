@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const sessionCookie = request.cookies.get("SESSION");
+  const sessionCookie = request.cookies.get("__host_cfx_sid");
 
   const protectedPaths = ["/dashboard", "/marketplace", "/payments"];
 

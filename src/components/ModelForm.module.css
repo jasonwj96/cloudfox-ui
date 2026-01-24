@@ -30,7 +30,6 @@
 }
 
 .modelFormHeaderTitle {
-  font-family: "Space Grotesk";
   width: fit-content;
   font-weight: 100;
   font-size: 1.5em;
@@ -132,8 +131,6 @@
   transition: 0.2s ease-in-out;
   color: #004696;
 }
-
-
 
 .loginFormLabel {
   color: #000;
@@ -255,64 +252,51 @@
 .modelFormFooter {
   display: flex;
   width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 30px 0px 10px 0px;
+}
+
+.footerButton {
+  min-width: 100px;
+  height: fit-content;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: 100ms;
+  font-size: 0.9em;
+  padding: 5px 0px;
+}
+
+.primaryActionBtn {
+  background-color: #000000;
+  border: 1px solid #000000;
+  margin: 0 0 0 auto;
+}
+
+.primaryActionBtn:hover {
+  background-color: #000000;
 }
 
 .secondaryActionBtn {
-  margin: 20px 50px;
   background-color: #ffffff;
-  width: 100%;
-  height: fit-content;
   color: #000000;
-  font-weight: bold;
-  font-size: 0.8em;
-  border: none;
-  padding: 10px;
-  text-align: center;
   border: 1px solid #000000;
+  margin: 0;
 }
 
 .secondaryActionBtn:hover {
   background-color: #000000;
   color: #ffffff;
-  transition: 100ms;
-  cursor: pointer;
-}
-
-.primaryActionBtn {
-  margin: 20px 50px;
-  background-color: #000000;
-  width: 100%;
-  height: fit-content;
-  color: white;
-  font-weight: bold;
-  font-size: 0.8em;
-  border: none;
-  padding: 10px;
-  text-align: center;
-}
-
-
-.primaryActionBtn:hover {
-  background-color: #000000;
-  transition: 100ms;
-  cursor: pointer;
 }
 
 .deleteModelBtn {
-  margin: 20px 10px;
   background-color: #ff2323;
-  width: 100%;
-  height: fit-content;
   color: white;
-  font-weight: bold;
-  font-size: 1em;
-  border: none;
-  padding: 10px;
-  text-align: center;
+  margin: 0 auto 0 0;
+ border: 1px solid #a00505;
 }
 
 .deleteModelBtn:hover {
   background-color: #a00505;
-  transition: 100ms;
-  cursor: pointer;
 }

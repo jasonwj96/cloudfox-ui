@@ -22,8 +22,8 @@ export default function ModelForm({
 }: ModelFormProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [modelData, setModelData] = useState<any>();
-  const [modelName, setModelName] = useState(selected.modelName);
-  const [modelStatus, setModelStatus] = useState<boolean>(selected.modelStatus);
+  const [modelName, setModelName] = useState(selected.name);
+  const [modelStatus, setModelStatus] = useState<boolean>(selected.active);
   const [modelParams, setModelParams] = useState<ModelParam[]>(
     selected.modelParams,
   );
@@ -140,7 +140,7 @@ export default function ModelForm({
 
     fetch(url, {
       method: "DELETE",
-      credentials: "include"
+      credentials: "include",
     })
       .then((response) => {
         if (!response.ok) {
@@ -183,8 +183,8 @@ export default function ModelForm({
   };
 
   useEffect(() => {
-    setModelName(selected.modelName);
-    setModelStatus(selected.modelStatus);
+    setModelName(selected.name);
+    setModelStatus(selected.active);
   }, [selected]);
   return (
     <div className={styles.modelFormContainer}>
@@ -333,7 +333,7 @@ export default function ModelForm({
           {selected.id ? (
             <button
               type="submit"
-              className={styles.deleteModelBtn}
+              className={`${styles.footerButton} ${styles.deleteModelBtn}`}
               onClick={deleteModel}
             >
               Delete
@@ -343,22 +343,20 @@ export default function ModelForm({
           )}
           <button
             type="submit"
-            className={styles.secondaryActionBtn}
+            className={`${styles.footerButton} ${styles.secondaryActionBtn}`}
             onClick={clearModel}
           >
             Clear
           </button>
           <button
             type="submit"
-            className={styles.primaryActionBtn}
+            className={`${styles.footerButton} ${styles.primaryActionBtn}`}
             onClick={saveModel}
           >
             Save
           </button>
         </div>
-      ) : (
-        <div></div>
-      )}
+      ) : null}
     </div>
   );
 }

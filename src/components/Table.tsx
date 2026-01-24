@@ -30,7 +30,7 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
               data.rows.map((row: ModelDetails) => {
                 const isSelected = selected?.id === row.id;
 
-                const date = new Date(row.uploadDate);
+                const date = new Date(row.creationDate);
 
                 const day = String(date.getUTCDate()).padStart(2, '0');
                 const month = String(date.getUTCMonth() + 1).padStart(2, '0');
@@ -45,14 +45,14 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
                     className={isSelected ? styles.activeRow : ''}
                   >
                     <td key={row.id}>{row.id}</td>
-                    <td>{row.modelName}</td>
-                    <td>{row.uploadedBy}</td>
+                    <td>{row.name}</td>
+                    <td>{row.accountName}</td>
                     <td>{formattedDate}</td>
                     <td>{row.generatedTokens}</td>
                     <td>
-                      <span className={row.modelStatus ?
+                      <span className={row.active ?
                         styles.modelStatusEnabled : styles.modelStatusDisabled}>
-                        {row.modelStatus ? "Enabled" : "Disabled"}
+                        {row.active ? "Enabled" : "Disabled"}
                       </span>
                     </td>
                   </tr>)

@@ -143,7 +143,6 @@
 
 .cardNumber {
   user-select: none;
-  font-family: Quicksand, Quicksand Fallback;
   font-style: normal;
   margin: 5px 0px 5px 0px;
   word-spacing: 5px;
@@ -218,7 +217,6 @@
 }
 
 .holocardNumber {
-  font-family: Quicksand, Quicksand Fallback;
   font-style: normal;
   width: 70px;
   font-size: 1em;
@@ -306,7 +304,6 @@
 }
 
 .input {
-  font-family: Quicksand, Quicksand Fallback;
   font-style: normal;
   color: #000;
   background-color: #f2f2f2;
@@ -369,7 +366,6 @@ input[type=number]::-webkit-inner-spin-button {
   width: 100%;
   height: fit-content;
   color: white;
-  font-family: "Quicksand";
   font-weight: bold;
   font-size: 1em;
   border: none;
