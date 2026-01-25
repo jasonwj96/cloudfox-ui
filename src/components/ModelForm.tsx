@@ -103,7 +103,7 @@ export default function ModelForm({
     setModelParams([]);
   };
 
-  const uploadModel = () => {
+  const createModel = () => {
     if (!selectedFile) {
       throw new Error("File must be selected.");
     }
@@ -114,14 +114,13 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/create`,
-      {
-        method: "POST",
-        body: body,
-        credentials: "include",
-      },
-    )
+    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/create`;
+
+    fetch(url, {
+      method: "POST",
+      body: body,
+      credentials: "include",
+    })
       .then((response) => response.json())
       .then((json) => {
         if (!json.error) {
@@ -132,6 +131,50 @@ export default function ModelForm({
       })
       .catch((err) => {
         console.error("Upload failed:", err);
+      });
+  };
+
+  const saveModel = () => {
+    if (!selectedFile) {
+      throw new Error("File must be selected.");
+    }
+
+    const body = new FormData();
+    body.append("modelId", selected.id);
+    body.append("modelName", modelName);
+    body.append("modelStatus", modelStatus.toString());
+    body.append("framework", "xgboost");
+    body.append("filePayload", selectedFile, selectedFile.name);
+
+    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/save`;
+
+    fetch(url, {
+      method: "POST",
+      body,
+      credentials: "include",
+    })
+      .then((response) => {
+        if (response.status === 204) {
+          return null;
+        }
+        if (!response.ok) {
+          return response.json().then((err) => {
+            throw err;
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data === null) {
+          console.log("Saved successfully");
+          onRefresh();
+        } else {
+          console.log("Response:", data);
+        }
+      })
+      .catch((err) => {
+        console.error("Request failed:", err);
+          onRefresh();
       });
   };
 
@@ -153,7 +196,7 @@ export default function ModelForm({
       });
   };
 
-  const saveModel = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (!selectedFile && !selected.id) {
@@ -172,13 +215,16 @@ export default function ModelForm({
       } catch (err) {
         console.error("Failed to parse JSON:", err);
       }
-      uploadModel();
     };
 
     if (selectedFile) {
       reader.readAsText(selectedFile);
+    }
+
+    if (selected.id) {
+      saveModel();
     } else {
-      uploadModel();
+      createModel();
     }
   };
 
@@ -338,9 +384,7 @@ export default function ModelForm({
             >
               Delete
             </button>
-          ) : (
-            <div></div>
-          )}
+          ) : null}
           <button
             type="submit"
             className={`${styles.footerButton} ${styles.secondaryActionBtn}`}
@@ -351,7 +395,7 @@ export default function ModelForm({
           <button
             type="submit"
             className={`${styles.footerButton} ${styles.primaryActionBtn}`}
-            onClick={saveModel}
+            onClick={handleSave}
           >
             Save
           </button>
