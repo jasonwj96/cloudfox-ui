@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import styles from "@/components/PaymentForm.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -21,6 +21,7 @@ export default function PaymentForm() {
   const [error, setError] = useState<string | null>(null);
   const [tokenAmount, setTokenAmount] = useState<number>(0);
   const [cardName, setCardName] = useState("");
+  const paymentIdempotencyKeyRef = useRef<string | null>(null);
 
   const PRICE_PER_UNIT = 0.001;
 
@@ -99,28 +100,40 @@ export default function PaymentForm() {
     }
   }, []);
 
-  const createPaymentIntent = async () => {
-    let  url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/payment/intent`;
-      
+  const getIdempotencyKey = () => {
+    if (!paymentIdempotencyKeyRef.current) {
+      paymentIdempotencyKeyRef.current = crypto.randomUUID();
+    }
+
+    return paymentIdempotencyKeyRef.current;
+  };
+
+  const createPaymentIntent = async (): Promise<string> => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/payment/intent`;
+
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
-        tokenAmount
+        tokenAmount,
+        idempotencyKey: getIdempotencyKey(),
       }),
     });
 
-    const  response = await res.json();
-    console.log(response);
+    if (!res.ok) {
+      throw new Error("Failed to create PaymentIntent");
+    }
+
+    const json = await res.json();
+    setClientSecret(json.stripeClientSecret);
+    return json.stripeClientSecret;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await createPaymentIntent();
-
-    if (!stripe || !elements || !clientSecret) {
+    if (!stripe || !elements) {
       setError("Stripe has not loaded yet.");
       return;
     }
@@ -128,42 +141,40 @@ export default function PaymentForm() {
     setIsProcessing(true);
     setError(null);
 
-    const cardNumberElement = elements.getElement(CardNumberElement);
+    try {
+      if (tokenAmount <= 0) {
+        throw new Error("Invalid token amount");
+      }
 
-    if (!cardNumberElement) {
-      setError("Card details not entered.");
+      const secret = clientSecret ?? (await createPaymentIntent());
+
+      const cardNumberElement = elements.getElement(CardNumberElement);
+
+      if (!cardNumberElement) {
+        throw new Error("Card details not entered.");
+      }
+
+      const result = await stripe.confirmCardPayment(secret, {
+        payment_method: { card: cardNumberElement },
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+
+      if (!result.paymentIntent) {
+        throw new Error("Payment confirmation failed");
+      }
+
+      if (result.paymentIntent?.status !== "succeeded") {
+        throw new Error("Payment is processing or requires additional action.");
+      }
+
+      alert("Payment successful. Tokens will be credited shortly.");
+    } catch (err: any) {
+      setError(err.message || "Payment failed.");
+    } finally {
       setIsProcessing(false);
-      return;
-    }
-
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: cardNumberElement,
-      },
-    });
-
-    setIsProcessing(false);
-
-    if (result.error) {
-      setError(result.error.message || "Payment failed.");
-    } else if (
-      result.paymentIntent &&
-      result.paymentIntent.status === "succeeded"
-    ) {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/api/buy-tokens`;
-      await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          username: "",
-          tokenAmount,
-        }),
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          alert("Payment successful!");
-        });
-    } else {
-      setError("Payment failed or was cancelled.");
     }
   };
 
