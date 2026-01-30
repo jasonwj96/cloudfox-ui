@@ -17,7 +17,20 @@ export default function PaymentPage() {
   const router = useRouter();
   const [currentTokens, setCurrentTokens] = useState(0);
 
-  useEffect(() => {}, []);
+   useEffect(() => {
+    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/accounts/profile`;
+
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json) {
+          setCurrentTokens(json.tokenBalance);
+        }
+      });
+  }, []);
 
   return (
     <div className={styles.paymentsContainer}>

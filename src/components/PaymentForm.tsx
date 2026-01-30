@@ -43,7 +43,6 @@ export default function PaymentForm() {
       .then((json) => {
         if (json) {
           setCardName(json.fullname);
-          setTokenAmount(json.tokenBalance);
           setPricePerToken(json.pricingPlanMicros);
           setPricingPlanCurrency(json.pricingPlanCurrency);
         }
@@ -195,9 +194,18 @@ export default function PaymentForm() {
           </div>
           <div className={styles.paymentFormCheckout}>
             <div className={styles.paymentFormCheckoutAmount}>
-              <label className={styles.loginFormLabel} htmlFor="login-user">
-                Token amount
-              </label>
+              {pricingPlanCurrency && pricePerToken !== undefined && (
+                <label className={styles.loginFormLabel} htmlFor="login-user">
+                  Token amount (
+                  {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: pricingPlanCurrency,
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }).format(pricePerToken / 100)}{" "}
+                  per token)
+                </label>
+              )}
               <input
                 name="login-user"
                 className={styles.input}
@@ -236,7 +244,7 @@ export default function PaymentForm() {
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: pricingPlanCurrency,
-              }).format((tokenAmount / 1_000_000) * pricePerToken)}
+              }).format(tokenAmount * pricePerToken / 100)}
             </button>
           ) : null}
         </div>
