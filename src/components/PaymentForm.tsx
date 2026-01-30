@@ -22,8 +22,6 @@ export default function PaymentForm() {
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [tokenAmount, setTokenAmount] = useState<number>(0);
   const [cardName, setCardName] = useState("");
   const [pricePerToken, setPricePerToken] = useState(0);
@@ -83,12 +81,10 @@ export default function PaymentForm() {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      setError("Stripe has not loaded yet.");
       return;
     }
 
     setIsProcessing(true);
-    setError(null);
 
     try {
       if (tokenAmount <= 0) {
@@ -123,7 +119,6 @@ export default function PaymentForm() {
 
       alert("Payment successful. Your tokens will be credited shortly.");
     } catch (err: any) {
-      setError(err.message || "Payment failed.");
     } finally {
       setIsProcessing(false);
     }

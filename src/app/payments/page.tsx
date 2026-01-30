@@ -5,7 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import PaymentForm from "@/components/PaymentForm";
 import styles from "@/app/payments/page.module.css";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
 
