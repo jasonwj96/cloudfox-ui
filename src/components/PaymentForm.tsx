@@ -10,6 +10,11 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import {
+  CARD_NUMBER_ELEMENT_OPTIONS,
+  CARD_CVC_ELEMENT_OPTIONS,
+  CARD_DATE_ELEMENT_OPTIONS,
+} from "@/components/StripeElementOptions";
 
 export default function PaymentForm() {
   const stripe = useStripe();
@@ -21,83 +26,28 @@ export default function PaymentForm() {
   const [error, setError] = useState<string | null>(null);
   const [tokenAmount, setTokenAmount] = useState<number>(0);
   const [cardName, setCardName] = useState("");
+  const [pricePerToken, setPricePerToken] = useState(0);
+  const [pricingPlanCurrency, setPricingPlanCurrency] = useState<
+    string | undefined
+  >(undefined);
   const paymentIdempotencyKeyRef = useRef<string | null>(null);
 
-  const PRICE_PER_UNIT = 0.001;
-
-  const CARD_NUMBER_ELEMENT_OPTIONS = {
-    placeholder: "XXXX XXXX XXXX XXXX",
-    style: {
-      base: {
-        fontFamily: "Quicksand, sans-serif",
-        fontStyle: "normal",
-        fontSize: "1.2em",
-        color: "#ffffff",
-        fontWeight: 100,
-        backgroundColor: "transparent",
-        wordSpacing: "5px",
-        letterSpacing: "1px",
-        padding: "5px",
-        border: "none",
-        "::placeholder": {
-          color: "#969696ff",
-        },
-      },
-      invalid: {
-        color: "#fe0000ff",
-      },
-    },
-  };
-
-  const CARD_CVC_ELEMENT_OPTIONS = {
-    placeholder: "cvc",
-    style: {
-      base: {
-        textAlign: "center",
-        fontFamily: "Quicksand, sans-serif",
-        fontStyle: "normal",
-        fontSize: "1em",
-        lineHeight: "1.5",
-        fontWeight: "bold",
-        color: "#303030",
-        letterSpacing: "1px",
-        "::placeholder": {
-          color: "#a0aec0",
-        },
-      },
-      invalid: {
-        color: "#fe0000ff",
-      },
-    },
-  };
-
-  const CARD_DATE_ELEMENT_OPTIONS = {
-    style: {
-      base: {
-        textAlign: "center",
-        fontFamily: "Quicksand, sans-serif",
-        fontStyle: "normal",
-        fontSize: "0.9em",
-        lineHeight: "1.5",
-        fontWeight: "100",
-        color: "#ffffff",
-        letterSpacing: "1px",
-        "::placeholder": {
-          color: "#a0aec0",
-        },
-      },
-      invalid: {
-        color: "#fe0000ff",
-      },
-    },
-  };
-
   useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      const user = JSON.parse(userData);
-      setCardName(user.fullname);
-    }
+    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/accounts/profile`;
+
+    fetch(url, {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json) {
+          setCardName(json.fullname);
+          setTokenAmount(json.tokenBalance);
+          setPricePerToken(json.pricingPlanMicros);
+          setPricingPlanCurrency(json.pricingPlanCurrency);
+        }
+      });
   }, []);
 
   const getIdempotencyKey = () => {
@@ -173,7 +123,6 @@ export default function PaymentForm() {
       }
 
       alert("Payment successful. Your tokens will be credited shortly.");
-
     } catch (err: any) {
       setError(err.message || "Payment failed.");
     } finally {
@@ -278,16 +227,18 @@ export default function PaymentForm() {
           <Link href="/dashboard" className={styles.returnButton}>
             Back to dashboard
           </Link>
-          <button
-            type="submit"
-            disabled={!stripe || isProcessing}
-            className={styles.buyButton}
-          >
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(tokenAmount * PRICE_PER_UNIT)}
-          </button>
+          {pricingPlanCurrency ? (
+            <button
+              type="submit"
+              disabled={!stripe || isProcessing}
+              className={styles.buyButton}
+            >
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: pricingPlanCurrency,
+              }).format((tokenAmount / 1_000_000) * pricePerToken)}
+            </button>
+          ) : null}
         </div>
       </form>
     </div>
