@@ -146,16 +146,18 @@ export default function PaymentForm() {
         throw new Error("Invalid token amount");
       }
 
-      const secret = clientSecret ?? (await createPaymentIntent());
-
+      const clientSecret = await createPaymentIntent();
       const cardNumberElement = elements.getElement(CardNumberElement);
 
       if (!cardNumberElement) {
         throw new Error("Card details not entered.");
       }
 
-      const result = await stripe.confirmCardPayment(secret, {
-        payment_method: { card: cardNumberElement },
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardNumberElement,
+          billing_details: { name: cardName },
+        },
       });
 
       if (result.error) {
@@ -170,7 +172,8 @@ export default function PaymentForm() {
         throw new Error("Payment is processing or requires additional action.");
       }
 
-      alert("Payment successful. Tokens will be credited shortly.");
+      alert("Payment successful. Your tokens will be credited shortly.");
+
     } catch (err: any) {
       setError(err.message || "Payment failed.");
     } finally {
