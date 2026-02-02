@@ -1,5 +1,0 @@
-services:
-  cloudfox-ui:
-    image: cloudfox-ui:latest
-    ports:
-      - "3000:3000"
