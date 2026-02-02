@@ -1,0 +1,11 @@
+services:
+  cloudfox-ui:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost
+        NEXT_PUBLIC_API_PORT: 8080
+    image: cloudfox-ui
+    container_name: cloudfox-ui
+    ports:
+      - "3000:3000"
