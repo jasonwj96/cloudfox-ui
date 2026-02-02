@@ -59,13 +59,8 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
-    let url = "";
-
-    if (isLogin) {
-      url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/session/login`;
-    } else {
-      url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/accounts/register`;
-    }
+    const base = "/cloudfox-api/v1";
+    const url = isLogin ? `${base}/session/login` : `${base}/accounts/register`;
 
     const body = {
       username: fieldRefs.username.current!.value,

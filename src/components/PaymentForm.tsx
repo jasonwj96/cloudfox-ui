@@ -31,9 +31,7 @@ export default function PaymentForm() {
   const paymentIdempotencyKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/accounts/profile`;
-
-    fetch(url, {
+    fetch("/cloudfox-api/v1/accounts/profile", {
       method: "GET",
       credentials: "include",
     })
@@ -56,9 +54,7 @@ export default function PaymentForm() {
   };
 
   const createPaymentIntent = async (): Promise<string> => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/payment/intent`;
-
-    const res = await fetch(url, {
+    const res = await fetch("/cloudfox-api/v1/payment/intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

@@ -114,9 +114,7 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/create`;
-
-    fetch(url, {
+    fetch("/cloudfox-api/v1/model/create", {
       method: "POST",
       body: body,
       credentials: "include",
@@ -146,9 +144,7 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/save`;
-
-    fetch(url, {
+    fetch("/cloudfox-api/v1/model/save", {
       method: "POST",
       body,
       credentials: "include",
@@ -174,14 +170,12 @@ export default function ModelForm({
       })
       .catch((err) => {
         console.error("Request failed:", err);
-          onRefresh();
+        onRefresh();
       });
   };
 
   const deleteModel = () => {
-    const url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/${selected.id}`;
-
-    fetch(url, {
+    fetch(`/cloudfox-api/v1/model/${selected.id}`, {
       method: "DELETE",
       credentials: "include",
     })
