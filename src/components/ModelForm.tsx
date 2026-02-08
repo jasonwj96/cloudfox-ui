@@ -114,7 +114,7 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    fetch("/cloudfox-api/v1/model/create", {
+    fetch("/api/model/create", {
       method: "POST",
       body: body,
       credentials: "include",
@@ -144,7 +144,7 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    fetch("/cloudfox-api/v1/model/save", {
+    fetch("/api/model/save", {
       method: "POST",
       body,
       credentials: "include",
@@ -175,7 +175,7 @@ export default function ModelForm({
   };
 
   const deleteModel = () => {
-    fetch(`/cloudfox-api/v1/model/${selected.id}`, {
+    fetch(`/api/model/${selected.id}`, {
       method: "DELETE",
       credentials: "include",
     })

@@ -59,7 +59,7 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
-    const base = "/cloudfox-api/v1";
+    const base = "/api";
     const url = isLogin ? `${base}/session/login` : `${base}/accounts/register`;
 
     const body = {

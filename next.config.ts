@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/cloudfox-api/:path*",
-        destination: "http://localhost:8080/cloudfox-api/:path*",
+        destination: "http://localhost:8080/cloudfox-api/v1/:path*",
       },
     ];
   },
