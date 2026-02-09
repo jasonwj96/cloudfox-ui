@@ -20,7 +20,7 @@ export default function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [tokenAmount, setTokenAmount] = useState<number>(0);
   const [cardName, setCardName] = useState("");
@@ -86,8 +86,9 @@ export default function PaymentForm() {
       if (tokenAmount <= 0) {
         throw new Error("Invalid token amount");
       }
+      
+      setClientSecret(await createPaymentIntent());
 
-      const clientSecret = await createPaymentIntent();
       const cardNumberElement = elements.getElement(CardNumberElement);
 
       if (!cardNumberElement) {

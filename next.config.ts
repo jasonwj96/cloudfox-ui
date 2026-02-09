@@ -1,17 +1,17 @@
 import type { NextConfig } from "next";
 
-const isDev = process.env.NODE_ENV === "development";
+const apiBase = process.env.API_BASE_URL;
 
 const nextConfig: NextConfig = {
   output: "standalone",
 
   async rewrites() {
-    if (!isDev) return [];
+    if (!apiBase) return [];
 
     return [
       {
         source: "/cloudfox-api/:path*",
-        destination: "http://localhost:8080/cloudfox-api/v1/:path*",
+        destination: `${apiBase}/cloudfox-api/v1/:path*`,
       },
     ];
   },
