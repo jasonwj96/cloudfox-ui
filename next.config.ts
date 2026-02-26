@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const apiBase = process.env.API_BASE_URL;
+const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
 
     return [
       {
-        source: "/cloudfox-api/:path*",
-        destination: `${apiBase}/cloudfox-api/v1/:path*`,
+        source: "/api/:path*",
+        destination: `${apiBase}/:path*`,
       },
     ];
   },

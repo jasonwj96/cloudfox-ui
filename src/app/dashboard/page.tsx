@@ -41,9 +41,7 @@ export default function DashboardPage() {
       "Status",
     ];
 
-    let url = `${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/model/find-by-account`;
-
-    fetch(url, {
+    fetch("/api/model/find-by-account", {
       method: "GET",
       credentials: "include",
     })

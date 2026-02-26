@@ -41,12 +41,11 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
 
   async function onFormSubmit(e: React.FormEvent) {
     e.preventDefault();
+    isLogin ? login() : register();
+  }
 
+  async function login() {
     const requiredFields = ["username", "password"];
-
-    if (!isLogin) {
-      requiredFields.push("fullname", "email");
-    }
 
     const isValid = requiredFields.every((key) =>
       validateField(
@@ -59,9 +58,6 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
-    const base = "/api";
-    const url = isLogin ? `${base}/session/login` : `${base}/accounts/register`;
-
     const body = {
       username: fieldRefs.username.current!.value,
       email: fieldRefs.email.current?.value ?? "",
@@ -69,12 +65,10 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       fullname: fieldRefs.fullname.current?.value ?? "",
     };
 
-    await fetch(url, {
+    await fetch("/api/session/login", {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())
@@ -83,7 +77,47 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
           console.log(json.message);
           return;
         }
-        router.push(isLogin ? "/dashboard" : "/login");
+        router.push("/dashboard");
+      })
+      .catch((e) => {
+        // Login/Register modal popup
+      });
+  }
+
+  async function register() {
+    const requiredFields = ["username", "password", "fullname", "email"];
+
+    const isValid = requiredFields.every((key) =>
+      validateField(
+        fieldRefs[key as keyof typeof fieldRefs].current!,
+        errorRefs[key as keyof typeof errorRefs].current!,
+      ),
+    );
+
+    if (!isValid) {
+      return;
+    }
+
+    const body = {
+      username: fieldRefs.username.current!.value,
+      email: fieldRefs.email.current?.value ?? "",
+      password: fieldRefs.password.current!.value,
+      fullname: fieldRefs.fullname.current?.value ?? "",
+    };
+
+    await fetch("/api/accounts/register", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.log(json.message);
+          return;
+        }
+        router.push("/login");
       })
       .catch((e) => {
         // Login/Register modal popup
