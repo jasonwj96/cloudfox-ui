@@ -1,4 +1,4 @@
-export function validateField(field, errorLabel) {
+export function validateField(field: any, errorLabel: any) {
 
   let errorMessages = [];
 
@@ -31,3 +31,16 @@ export function validateField(field, errorLabel) {
     return false;
   }
 };
+
+export function getCookie(name: string): string | null {
+  const cookies = document.cookie.split("; ");
+
+  for (const cookie of cookies) {
+    const [key, ...rest] = cookie.split("=");
+    if (key === name) {
+      return decodeURIComponent(rest.join("="));
+    }
+  }
+
+  return null;
+}
