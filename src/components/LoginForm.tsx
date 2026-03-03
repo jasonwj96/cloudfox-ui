@@ -6,6 +6,7 @@ import styles from "@/components/LoginForm.module.css";
 import { useRouter } from "next/navigation";
 import LoginFormData from "@/models/LoginFormData";
 import { validateField, getCookie } from "@/lib/utils";
+import { FetchRequest } from "@/utils/net";
 
 interface LoginFormProps {
   isLogin: boolean;
@@ -65,19 +66,15 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       fullname: fieldRefs.fullname.current?.value ?? "",
     };
 
-    await fetch("/api/auth/csrf", {
-      credentials: "include",
-    });
+    const request: FetchRequest = new FetchRequest();
 
-    const csrfToken = getCookie("XSRF-TOKEN");
+    request.url = new URL("/api/session/login");
+    request.headers = {
+      "Content-Type": "application/json",
+    };
 
-    await fetch("/api/session/login", {
+    await fetch("", {
       method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        "X-XSRF-TOKEN": csrfToken ?? "",
-      },
       body: JSON.stringify(body),
     })
       .then((response) => response.json())

@@ -1,12 +1,12 @@
 
 import { sanitize } from './utils';
 
-export const processRequest = async (formElement, callback) => {
+export const processRequest = async (formElement: any, callback: CallableFunction) => {
   const modelId = sanitize(formElement.getAttribute('data-cloudfox-model'));
   const inputs = formElement.querySelectorAll('[data-cloudfox-input]');
-  const payload = {};
+  const payload: any = {};
 
-  inputs.forEach(input => {
+  inputs.forEach((input: any) => {
     const name = sanitize(input.getAttribute('data-cloudfox-input'));
     payload[name] = input.value;
   });
