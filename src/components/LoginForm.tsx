@@ -6,7 +6,7 @@ import styles from "@/components/LoginForm.module.css";
 import { useRouter } from "next/navigation";
 import LoginFormData from "@/models/LoginFormData";
 import { validateField, getCookie } from "@/lib/utils";
-import { FetchRequest } from "@/utils/net";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 interface LoginFormProps {
   isLogin: boolean;
@@ -68,25 +68,26 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
 
     const request: FetchRequest = new FetchRequest();
 
-    request.url = new URL("/api/session/login");
+    request.url = "/session/login";
+    request.method = "POST";
     request.headers = {
       "Content-Type": "application/json",
     };
 
-    await fetch("", {
-      method: "POST",
-      body: JSON.stringify(body),
-    })
+    request.body = body;
+
+    await fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {
-          console.log(json.message);
+          console.error(json.message);
           return;
         }
+
         router.push("/dashboard");
       })
-      .catch((e) => {
-        // Login/Register modal popup
+      .catch((err) => {
+        console.error(err);
       });
   }
 
