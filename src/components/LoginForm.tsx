@@ -59,12 +59,10 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
-    const body = {
-      username: fieldRefs.username.current!.value,
-      email: fieldRefs.email.current?.value ?? "",
-      password: fieldRefs.password.current!.value,
-      fullname: fieldRefs.fullname.current?.value ?? "",
-    };
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
+    });
 
     const request: FetchRequest = new FetchRequest();
 
@@ -74,7 +72,12 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       "Content-Type": "application/json",
     };
 
-    request.body = body;
+    request.body = {
+      username: fieldRefs.username.current!.value,
+      email: fieldRefs.email.current?.value ?? "",
+      password: fieldRefs.password.current!.value,
+      fullname: fieldRefs.fullname.current?.value ?? "",
+    };
 
     await fetchService(request)
       .then((response) => response.json())
@@ -105,19 +108,21 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
-    const body = {
+    const request = new FetchRequest();
+
+    request.method = "POST";
+    request.headers = {
+      "Content-Type": "application/json",
+    };
+
+    request.body = {
       username: fieldRefs.username.current!.value,
       email: fieldRefs.email.current?.value ?? "",
       password: fieldRefs.password.current!.value,
       fullname: fieldRefs.fullname.current?.value ?? "",
     };
 
-    await fetch("/api/accounts/register", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    })
+    await fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (json.error) {

@@ -4,6 +4,7 @@ import { FormEvent, useState, useEffect } from "react";
 import styles from "@/components/ModelForm.module.css";
 import ModelDetails from "@/models/ModelDetails";
 import ModelParam from "@/models/ModelParam";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 interface ModelFormProps {
   selected: ModelDetails;
@@ -103,10 +104,15 @@ export default function ModelForm({
     setModelParams([]);
   };
 
-  const createModel = () => {
+  const createModel = async () => {
     if (!selectedFile) {
       throw new Error("File must be selected.");
     }
+
+    const request = new FetchRequest();
+
+    request.url = "/model/create";
+    request.method = "POST";
 
     const body = new FormData();
     body.append("modelName", modelName);
@@ -114,11 +120,9 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    fetch("/api/model/create", {
-      method: "POST",
-      body: body,
-      credentials: "include",
-    })
+    request.body = body;
+
+    await fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (!json.error) {
@@ -137,6 +141,11 @@ export default function ModelForm({
       throw new Error("File must be selected.");
     }
 
+    const request = new FetchRequest();
+
+    request.url = "/model/create";
+    request.method = "POST";
+
     const body = new FormData();
     body.append("modelId", selected.id);
     body.append("modelName", modelName);
@@ -144,11 +153,9 @@ export default function ModelForm({
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 
-    fetch("/api/model/save", {
-      method: "POST",
-      body,
-      credentials: "include",
-    })
+    request.body = body;
+
+    fetchService(request)
       .then((response) => {
         if (response.status === 204) {
           return null;
@@ -175,10 +182,12 @@ export default function ModelForm({
   };
 
   const deleteModel = () => {
-    fetch(`/api/model/${selected.id}`, {
-      method: "DELETE",
-      credentials: "include",
-    })
+    const request = new FetchRequest();
+
+    request.url = `/model/${selected.id}`;
+    request.method = "DELETE";
+
+    fetchService(request)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Delete failed");

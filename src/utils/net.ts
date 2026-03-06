@@ -5,27 +5,26 @@ export class FetchRequest {
     public url: string = "",
     public method: string = "GET",
     public headers: Record<string, string> = {},
-    public body: unknown = null,
+    public body: unknown | null = null,
   ) {}
 }
 
 export async function fetchService(request: FetchRequest): Promise<Response> {
   const startTime = Date.now();
 
-  await fetch("/api/security/csrf-token", {
-    method: "GET",
-    credentials: "include",
-  });
+  const headers = { ...request.headers };
+  const method = request.method.toUpperCase();
 
-  const csrfToken = getCookie("XSRF-TOKEN");
+  if (request.body !== null) {
+    headers["Content-Type"] = "application/json";
+  }
 
-  const headers = {
-    "X-XSRF-TOKEN": csrfToken ?? "",
-    ...request.headers,
-  };
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+    headers["X-XSRF-TOKEN"] = getCookie("XSRF-TOKEN") ?? "";
+  }
 
-  const response = await fetch("/api"  + request.url, {
-    method: request.method,
+  const response = await fetch("/api" + request.url, {
+    method: method,
     headers,
     credentials: "include",
     body: request.body !== null ? JSON.stringify(request.body) : undefined,

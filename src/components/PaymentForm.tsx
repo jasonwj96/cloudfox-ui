@@ -15,6 +15,7 @@ import {
   CARD_CVC_ELEMENT_OPTIONS,
   CARD_DATE_ELEMENT_OPTIONS,
 } from "@/components/StripeElementOptions";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 export default function PaymentForm() {
   const stripe = useStripe();
@@ -54,21 +55,23 @@ export default function PaymentForm() {
   };
 
   const createPaymentIntent = async (): Promise<string> => {
-    const res = await fetch("/api/payment/intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        tokenAmount,
-        idempotencyKey: getIdempotencyKey(),
-      }),
+    const request = new FetchRequest();
+   
+    request.url = "/payment/intent";
+    request.method = "POST";
+    request.headers = { "Content-Type": "application/json" };
+    request.body = JSON.stringify({
+      tokenAmount,
+      idempotencyKey: getIdempotencyKey(),
     });
 
-    if (!res.ok) {
+    const response = await fetchService(request);
+
+    if (!response.ok) {
       throw new Error("Failed to create PaymentIntent");
     }
 
-    const json = await res.json();
+    const json = await response.json();
     setClientSecret(json.stripeClientSecret);
     return json.stripeClientSecret;
   };
@@ -86,7 +89,7 @@ export default function PaymentForm() {
       if (tokenAmount <= 0) {
         throw new Error("Invalid token amount");
       }
-      
+
       setClientSecret(await createPaymentIntent());
 
       const cardNumberElement = elements.getElement(CardNumberElement);
@@ -236,7 +239,7 @@ export default function PaymentForm() {
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: pricingPlanCurrency,
-              }).format(tokenAmount * pricePerToken / 100)}
+              }).format((tokenAmount * pricePerToken) / 100)}
             </button>
           ) : null}
         </div>
