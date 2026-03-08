@@ -41,7 +41,7 @@ export default function DashboardPage() {
       "Status",
     ];
 
-    fetch("/api/model/find-by-account", {
+    fetch("/models", {
       method: "GET",
       credentials: "include",
     })
