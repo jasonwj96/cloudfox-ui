@@ -194,7 +194,7 @@ export default function ModelForm({
   const deleteModel = async () => {
     const request = new FetchRequest();
 
-    request.url = `/model/${selected.id}`;
+    request.url = `/models/${selected.id}`;
     request.method = "DELETE";
 
     await fetch("/api/security/csrf-token", {
