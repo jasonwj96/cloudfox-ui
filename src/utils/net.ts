@@ -10,27 +10,29 @@ export class FetchRequest {
 }
 
 export async function fetchService(request: FetchRequest): Promise<Response> {
-  const startTime = Date.now();
-
   const headers = { ...request.headers };
   const method = request.method.toUpperCase();
-
-  if (request.body !== null) {
-    headers["Content-Type"] = "application/json";
-  }
 
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
     headers["X-XSRF-TOKEN"] = getCookie("XSRF-TOKEN") ?? "";
   }
 
+  let body: BodyInit | undefined;
+
+  if (request.body instanceof FormData) {
+    body = request.body;
+
+  } else if (request.body != null) {
+    headers["Content-Type"] = "application/json";
+    body = JSON.stringify(request.body);
+  }
+
   const response = await fetch("/api" + request.url, {
-    method: method,
+    method,
     headers,
     credentials: "include",
-    body: request.body !== null ? JSON.stringify(request.body) : undefined,
+    body,
   });
-
-  console.debug(`Request took ${Date.now() - startTime}ms`);
 
   return response;
 }

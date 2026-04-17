@@ -24,7 +24,7 @@ export default function ModelForm({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [modelData, setModelData] = useState<any>();
   const [modelName, setModelName] = useState(selected.name);
-  const [modelStatus, setModelStatus] = useState<boolean>(selected.active);
+  const [modelStatus, setModelStatus] = useState<string>("DISABLED");
   const [modelParams, setModelParams] = useState<ModelParam[]>(
     selected.modelParams,
   );
@@ -111,7 +111,7 @@ export default function ModelForm({
 
     const request = new FetchRequest();
 
-    request.url = "/model/create";
+    request.url = "/models";
     request.method = "POST";
 
     const body = new FormData();
@@ -121,6 +121,11 @@ export default function ModelForm({
     body.append("filePayload", selectedFile, selectedFile.name);
 
     request.body = body;
+
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
+    });
 
     await fetchService(request)
       .then((response) => response.json())
@@ -136,15 +141,15 @@ export default function ModelForm({
       });
   };
 
-  const saveModel = () => {
+  const saveModel = async () => {
     if (!selectedFile) {
       throw new Error("File must be selected.");
     }
 
     const request = new FetchRequest();
 
-    request.url = "/model/create";
-    request.method = "POST";
+    request.url = "/models";
+    request.method = "PATCH";
 
     const body = new FormData();
     body.append("modelId", selected.id);
@@ -154,6 +159,11 @@ export default function ModelForm({
     body.append("filePayload", selectedFile, selectedFile.name);
 
     request.body = body;
+
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
+    });
 
     fetchService(request)
       .then((response) => {
@@ -181,11 +191,16 @@ export default function ModelForm({
       });
   };
 
-  const deleteModel = () => {
+  const deleteModel = async () => {
     const request = new FetchRequest();
 
     request.url = `/model/${selected.id}`;
     request.method = "DELETE";
+
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
+    });
 
     fetchService(request)
       .then((response) => {
@@ -233,7 +248,7 @@ export default function ModelForm({
 
   useEffect(() => {
     setModelName(selected.name);
-    setModelStatus(selected.active);
+    setModelStatus("ACTIVE");
   }, [selected]);
   return (
     <div className={styles.modelFormContainer}>
@@ -298,26 +313,26 @@ export default function ModelForm({
                 <label
                   htmlFor="status-active"
                   className={
-                    modelStatus === true
+                    modelStatus === "ACTIVE"
                       ? styles.radioLabelSelected
                       : styles.radioLabel
                   }
-                  onClick={() => setModelStatus(true)}
+                  onClick={() => setModelStatus("ACTIVE")}
                 >
                   Enabled
                 </label>
                 <div
                   className={styles.radioInput}
-                  onClick={() => setModelStatus(false)}
+                  onClick={() => setModelStatus("DISABLED")}
                 />
                 <label
                   htmlFor="status-inactive"
                   className={
-                    modelStatus === false
+                    modelStatus === "DISABLED"
                       ? styles.radioLabelSelected
                       : styles.radioLabel
                   }
-                  onClick={() => setModelStatus(false)}
+                  onClick={() => setModelStatus("DISABLED")}
                 >
                   Disabled
                 </label>
