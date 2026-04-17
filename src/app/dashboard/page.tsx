@@ -7,6 +7,7 @@ import ModelForm from "@/components/ModelForm";
 import ModelDetails from "@/models/ModelDetails";
 import TableData from "@/models/TableData";
 import { useState, useEffect, useCallback } from "react";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 export default function DashboardPage() {
   const [modelList, setModelList] = useState(new TableData([], []));
@@ -23,7 +24,7 @@ export default function DashboardPage() {
   const handleUpdate = (updated: ModelDetails) => {
     setTableData((td) => {
       const rows = td.rows.map((row) =>
-        row.id === updated.id ? updated : row
+        row.id === updated.id ? updated : row,
       );
       return new TableData(td.columns, rows);
     });
@@ -31,7 +32,7 @@ export default function DashboardPage() {
     setSelected(updated);
   };
 
-  const loadModels = () => {
+  const loadModels = async () => {
     const columns = [
       "Model Id",
       "Model name",
@@ -41,10 +42,17 @@ export default function DashboardPage() {
       "Status",
     ];
 
-    fetch("/models", {
+    const request = new FetchRequest();
+
+    request.url = "/models/me";
+    request.method = "GET";
+
+    await fetch("/api/security/csrf-token", {
       method: "GET",
       credentials: "include",
-    })
+    });
+
+    fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (json.models) {
@@ -58,8 +66,8 @@ export default function DashboardPage() {
                 model.creationDate,
                 model.generatedTokens,
                 model.active,
-                []
-              )
+                [],
+              ),
           );
           setModelList(new TableData(columns, rows));
         }
