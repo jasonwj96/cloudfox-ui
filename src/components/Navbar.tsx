@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FormEvent } from "react";
 import styles from "./Navbar.module.css";
 import { useRouter } from "next/navigation";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 interface NavbarProps {
   currentPage: string;
@@ -15,10 +16,31 @@ export default function Navbar({ currentPage, currentTokens }: NavbarProps) {
   const router = useRouter();
 
   async function logout() {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}:${process.env.NEXT_PUBLIC_API_PORT}/cloudfox-api/v1/session/logout`, {
-      method: "POST",
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
       credentials: "include",
     });
+
+    const request = new FetchRequest();
+
+    request.url = "/session/logout";
+    request.method = "POST";
+    request.headers = {
+      "Content-Type": "application/json",
+    };
+
+    await fetchService(request)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          console.log(json.message);
+          return;
+        }
+        router.push("/login");
+      })
+      .catch((e) => {
+        // Login/Register modal popup
+      });
 
     router.push("/login");
     router.refresh();
