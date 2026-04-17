@@ -15,7 +15,8 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
     <div className={styles.tableContainer}>
       <div className={styles.tableHeader}>
         <div className={styles.tableHeaderTitle}>My models</div>
-        <div className={styles.tableHeaderButton} onClick={() => onRowClick?.(new ModelDetails("", "", "", "", 0, false, []))}>+</div>
+        <div className={styles.tableHeaderButton} onClick={() => onRowClick?.(
+          new ModelDetails("", "", "", "", 0, "","", "", new Date(), []))}>+</div>
       </div>
 
       {data.rows.length > 0 ? (
@@ -50,9 +51,9 @@ export default function Table({ data, onRowClick, selected }: TableProps) {
                     <td>{formattedDate}</td>
                     <td>{row.generatedTokens}</td>
                     <td>
-                      <span className={row.active ?
+                      <span className={row.status === "ACTIVE" ?
                         styles.modelStatusEnabled : styles.modelStatusDisabled}>
-                        {row.active ? "Enabled" : "Disabled"}
+                        {row.status ? "ACTIVE" : "DISABLED"}
                       </span>
                     </td>
                   </tr>)

@@ -65,7 +65,10 @@ export default function DashboardPage() {
                 model.accountName,
                 model.creationDate,
                 model.generatedTokens,
-                model.active,
+                model.status,
+                model.fileName,
+                model.framework,
+                model.lastModified,
                 [],
               ),
           );

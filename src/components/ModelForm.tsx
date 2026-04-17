@@ -148,7 +148,7 @@ export default function ModelForm({
 
     const request = new FetchRequest();
 
-    request.url = "/models";
+    request.url = `/models/${selected.id}`;
     request.method = "PATCH";
 
     const body = new FormData();
