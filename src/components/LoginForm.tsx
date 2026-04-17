@@ -108,8 +108,14 @@ export default function LoginForm({ isLogin }: LoginFormProps) {
       return;
     }
 
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
+    });
+
     const request = new FetchRequest();
 
+    request.url = "/accounts";
     request.method = "POST";
     request.headers = {
       "Content-Type": "application/json",
