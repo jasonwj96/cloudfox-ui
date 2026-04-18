@@ -30,9 +30,9 @@ export default class ModelDetails {
     this.creationDate = creationDate;
     this.generatedTokens = generatedTokens;
     this.status = status;
-    ((this.fileName = fileName),
-      (this.framework = framework),
-      (this.lastModified = lastModified),
-      (this.modelParams = modelParams));
+    this.fileName = fileName;
+    this.framework = framework;
+    this.lastModified = lastModified;
+    this.modelParams = modelParams;
   }
 }

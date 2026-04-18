@@ -69,7 +69,7 @@ export default function DashboardPage() {
                 model.fileName,
                 model.framework,
                 model.lastModified,
-                [],
+                model.modelParams,
               ),
           );
           setModelList(new TableData(columns, rows));
