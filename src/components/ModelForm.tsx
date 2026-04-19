@@ -154,7 +154,7 @@ export default function ModelForm({
     const body = new FormData();
     body.append("modelId", selected.id);
     body.append("modelName", modelName);
-    body.append("modelStatus", modelStatus.toString());
+    body.append("modelStatus", modelStatus);
     body.append("framework", "xgboost");
     body.append("filePayload", selectedFile, selectedFile.name);
 

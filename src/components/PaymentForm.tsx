@@ -32,10 +32,17 @@ export default function PaymentForm() {
   const paymentIdempotencyKeyRef = useRef<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/accounts/profile", {
+    const request = new FetchRequest();
+
+    request.url = `/accounts/me`;
+    request.method = "GET";
+
+    fetch("/api/security/csrf-token", {
       method: "GET",
       credentials: "include",
-    })
+    });
+
+    fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (json) {
@@ -56,13 +63,19 @@ export default function PaymentForm() {
 
   const createPaymentIntent = async (): Promise<string> => {
     const request = new FetchRequest();
-   
+
     request.url = "/payment/intent";
     request.method = "POST";
     request.headers = { "Content-Type": "application/json" };
-    request.body = JSON.stringify({
+
+    request.body = {
       tokenAmount,
       idempotencyKey: getIdempotencyKey(),
+    };
+
+    await fetch("/api/security/csrf-token", {
+      method: "GET",
+      credentials: "include",
     });
 
     const response = await fetchService(request);
@@ -90,15 +103,15 @@ export default function PaymentForm() {
         throw new Error("Invalid token amount");
       }
 
-      setClientSecret(await createPaymentIntent());
-
       const cardNumberElement = elements.getElement(CardNumberElement);
 
       if (!cardNumberElement) {
         throw new Error("Card details not entered.");
       }
 
-      const result = await stripe.confirmCardPayment(clientSecret, {
+      const secret = await createPaymentIntent(); 
+
+      const result = await stripe.confirmCardPayment(secret, {
         payment_method: {
           card: cardNumberElement,
           billing_details: { name: cardName },

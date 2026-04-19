@@ -7,6 +7,7 @@ import styles from "@/app/payments/page.module.css";
 import { useState, useEffect } from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
+import { FetchRequest, fetchService } from "@/utils/net";
 
 const stripePromise = loadStripe(
   `${process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY}`,
@@ -16,10 +17,17 @@ export default function PaymentPage() {
   const [currentTokens, setCurrentTokens] = useState(0);
 
   useEffect(() => {
-    fetch("/accounts/profile", {
+    const request = new FetchRequest();
+
+    request.url = `/accounts/me`;
+    request.method = "GET";
+
+    fetch("/api/security/csrf-token", {
       method: "GET",
       credentials: "include",
-    })
+    });
+
+    fetchService(request)
       .then((response) => response.json())
       .then((json) => {
         if (json) {
